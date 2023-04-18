@@ -3,10 +3,7 @@ package ru.zubov.pizzacloud.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.Ingredient.Type;
 import ru.zubov.pizzacloud.entity.Pizza;
@@ -20,7 +17,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Controller
 @RequestMapping("/design")
-@SessionAttributes("tacoOrder")
+@SessionAttributes("pizzaOrder")
 public class DesignPizzaController {
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
@@ -51,18 +48,30 @@ public class DesignPizzaController {
                     filterByType(ingredients, type));
         }
     }
+
     @ModelAttribute(name = "pizzaOrder")
     public PizzaOrder order() {
         return new PizzaOrder();
     }
+
     @ModelAttribute(name = "pizza")
     public Pizza taco() {
         return new Pizza();
     }
+
     @GetMapping
     public String showDesignForm() {
         return "design";
     }
+
+    @PostMapping
+    public String processPizza(Pizza pizza, @ModelAttribute PizzaOrder pizzaOrder) {
+        pizzaOrder.addPizza(pizza);
+        log.info("Processing pizza: {}", pizza);
+
+        return "redirect:/orders/current";
+    }
+
     private Iterable<Ingredient> filterByType(
             List<Ingredient> ingredients, Type type) {
         return ingredients
