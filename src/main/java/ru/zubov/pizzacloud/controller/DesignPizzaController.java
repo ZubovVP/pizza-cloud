@@ -1,8 +1,10 @@
 package ru.zubov.pizzacloud.controller;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.Ingredient.Type;
@@ -65,7 +67,10 @@ public class DesignPizzaController {
     }
 
     @PostMapping
-    public String processPizza(Pizza pizza, @ModelAttribute PizzaOrder pizzaOrder) {
+    public String processPizza(@Valid Pizza pizza, Errors errors, @ModelAttribute PizzaOrder pizzaOrder) {
+        if (errors.hasErrors()) {
+            return "design";
+        }
         pizzaOrder.addPizza(pizza);
         log.info("Processing pizza: {}", pizza);
 
