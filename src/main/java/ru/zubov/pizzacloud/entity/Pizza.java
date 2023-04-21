@@ -4,15 +4,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 public class Pizza {
     @NotNull
-    @Size(min=4, message="Name must be at least 4 characters long")
+    @Size(min = 4, message = "Name must be at least 4 characters long")
     private String name;
+
     @NotNull
-    @Size(min=1, message="You must choose at least 1 ingredient")
+    @Size(min = 1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
+
+    private LocalDateTime createdAt = LocalDateTime.now();
 
 }
