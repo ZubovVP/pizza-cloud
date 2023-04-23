@@ -4,7 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import javax.sql.DataSource;
 
@@ -17,14 +18,11 @@ public class PizzaCloudApplication {
 
     @Bean
     public DataSource dataSource() {
-        var dataSource = new DriverManagerDataSource();
-
-        dataSource.setDriverClassName();
-        dataSource.setUrl();
-        dataSource.setUsername();
-        dataSource.setPassword();
-
-        return dataSource;
+        return new EmbeddedDatabaseBuilder()
+                .setType(EmbeddedDatabaseType.H2)
+                .addScript("schema.sql")
+                .addScript("data.sql")
+                .build();
     }
 
     @Bean
