@@ -6,13 +6,14 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PizzaOrder implements Serializable {
+public class PizzaOrder {
+    private long id;
+
     @NotBlank(message="Delivery name is required")
     private String deliveryName;
 
