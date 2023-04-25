@@ -3,12 +3,14 @@ package ru.zubov.pizzacloud.entity;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 public class Pizza {
+    @Id
     private long id;
 
     @NotNull

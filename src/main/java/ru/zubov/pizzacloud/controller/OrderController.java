@@ -10,12 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.repository.OrderRepository;
 
 @Slf4j
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("pizzaOrder")
 public class OrderController {
+    private final OrderRepository repository;
+
+    public OrderController(OrderRepository repository) {
+        this.repository = repository;
+    }
+
 
     @GetMapping("/current")
     public String orderForm() {
@@ -28,6 +35,7 @@ public class OrderController {
         if (errors.hasErrors()) {
             return "orderForm";
         }
+        repository.save(order);
 
         log.info("Order submitted: {}", order);
         sessionStatus.setComplete();
