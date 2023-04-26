@@ -1,12 +1,11 @@
 package ru.zubov.pizzacloud.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -14,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Table("Pizza_Cloud_Order")
+@Entity
 public class PizzaOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @NotBlank(message = "Delivery name is required")
@@ -48,6 +48,7 @@ public class PizzaOrder implements Serializable {
 
     private LocalDateTime placedAt;
 
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Pizza> pizza = new ArrayList<>();
 
     public void addPizza(Pizza pizza) {
