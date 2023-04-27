@@ -10,7 +10,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Pizza {
