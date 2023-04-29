@@ -2,11 +2,13 @@ package ru.zubov.pizzacloud.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public interface OrderRepository extends CrudRepository<PizzaOrder, Long> {
 
     List<PizzaOrder> readOrdersByDeliveryZipAndPlacedAtBetween(String deliveryZip, LocalDateTime startDate, LocalDateTime endDate);

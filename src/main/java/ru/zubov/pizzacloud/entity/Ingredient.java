@@ -1,7 +1,6 @@
 package ru.zubov.pizzacloud.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,13 +11,19 @@ import java.util.Objects;
 
 @Data
 @Entity
+@Table
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Ingredient {
 
     @Id
     private String id;
+
+    @Column(name = "name")
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type")
     private Type type;
 
 
