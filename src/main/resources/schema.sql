@@ -25,9 +25,11 @@ create table if not exists Pizza (
     created_at timestamp not null
     );
 
-create table if not exists Ingredient_Ref (
-    ingredient varchar(6) references Ingredient(id),
-    pizza bigint not null,
-    pizza_key bigint not null
-    );
+-- create table if not exists Ingredient_Ref (
+--     ingredient varchar(6) references Ingredient(id),
+--     pizza bigint not null,
+--     pizza_key bigint not null
+--     );
+
+
 
