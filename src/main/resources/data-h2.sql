@@ -1,4 +1,3 @@
--- delete from Ingredient_Ref;
 delete from Pizza;
 delete from Pizza_Order;
 delete from Ingredient;
