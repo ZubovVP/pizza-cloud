@@ -25,6 +25,18 @@ create table if not exists Pizza (
     created_at timestamp not null
     );
 
+create table if not exists Pizza_Order (
+    id identity primary key,
+    username varchar(50) not null,
+    password varchar(50) not null,
+    fullname varchar(50) not null,
+    street varchar(50),
+    city varchar(50),
+    state varchar(50),
+    zip varchar(50),
+    phoneNumber varchar(50) not null
+    );
+
 -- create table if not exists Ingredient_Ref (
 --     ingredient varchar(6) references Ingredient(id),
 --     pizza bigint not null,
