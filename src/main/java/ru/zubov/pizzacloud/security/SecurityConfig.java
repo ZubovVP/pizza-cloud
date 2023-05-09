@@ -1,7 +1,13 @@
 package ru.zubov.pizzacloud.security;
 
-//@Configuration
-//public class SecurityConfig {
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+public class SecurityConfig {
 //
 //    @Bean
 //    public PasswordEncoder passwordEncoder() {
@@ -19,19 +25,19 @@ package ru.zubov.pizzacloud.security;
 //        };
 //    }
 //
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        return http.authorizeHttpRequests()
-//                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
-//                .requestMatchers("/", "/**").permitAll()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/design", true)
-////                .loginProcessingUrl("/authenticate")
-////                .usernameParameter("user")
-////                .passwordParameter("pwd")
-//                .and()
-//                .build();
-//    }
-//}
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http.authorizeHttpRequests()
+                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
+                .requestMatchers("/", "/**").permitAll()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/design", true)
+//                .loginProcessingUrl("/authenticate")
+//                .usernameParameter("user")
+//                .passwordParameter("pwd")
+                .and()
+                .build();
+    }
+}
