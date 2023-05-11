@@ -40,6 +40,6 @@ public class SecurityConfig {
 //                .usernameParameter("user")
 //                .passwordParameter("pwd")
                 .and()
-                .build();
+                .csrf().disable().build();
     }
 }
