@@ -41,13 +41,13 @@ create table if not exists Pizza_Order (
 create table if not exists Users (
     id identity primary key,
     username varchar(50) not null,
-    password varchar(50) not null,
+    password varchar(100) not null,
     fullname varchar(50) not null,
     street varchar(50),
     city varchar(50),
     st varchar(50),
     zip varchar(50),
-    phoneNumber varchar(50) not null
+    phone_number varchar(50) not null
     );
 
 -- create table if not exists Ingredient_Ref (

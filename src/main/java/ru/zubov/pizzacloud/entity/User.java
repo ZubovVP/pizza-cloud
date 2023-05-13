@@ -20,7 +20,7 @@ import java.util.List;
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
     private final String username;
     private final String password;
@@ -30,6 +30,7 @@ public class User implements UserDetails {
     @Column(name = "st")
     private final String state;
     private final String zip;
+    @Column(name = "phone_number")
     private final String phoneNumber;
 
     @Override
