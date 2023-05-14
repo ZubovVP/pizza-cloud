@@ -26,7 +26,7 @@ public class SecurityConfig {
     public UserDetailsService userDetailsService(UserRepository userRepo) {
         return username -> {
             User user = userRepo.findByUsername(username);
-            if (user != null){
+            if (user != null) {
                 return user;
             }
             throw new UsernameNotFoundException("User " + username + " not found");
@@ -45,7 +45,12 @@ public class SecurityConfig {
 //                .loginProcessingUrl("/authenticate")
 //                .usernameParameter("user")
 //                .passwordParameter("pwd")
+                .permitAll()
                 .and()
-                .csrf().disable().build();
+                .logout()
+                .permitAll()
+                .logoutSuccessUrl("/")
+                .and()
+                .build();
     }
 }
