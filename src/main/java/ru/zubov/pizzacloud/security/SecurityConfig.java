@@ -45,12 +45,6 @@ public class SecurityConfig {
 //                .loginProcessingUrl("/authenticate")
 //                .usernameParameter("user")
 //                .passwordParameter("pwd")
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll()
-                .logoutSuccessUrl("/")
-                .and()
-                .build();
+                .permitAll().successForwardUrl("/design").and().build();
     }
 }
