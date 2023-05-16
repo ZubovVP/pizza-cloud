@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,16 +36,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.authorizeHttpRequests()
+        return http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
-                .requestMatchers("/", "/**").permitAll()
+                .requestMatchers("/", "/**")               .permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/design", true)
-//                .loginProcessingUrl("/authenticate")
-//                .usernameParameter("user")
-//                .passwordParameter("pwd")
-                .permitAll().successForwardUrl("/design").and().build();
+                .formLogin().loginPage("/login").loginProcessingUrl("login/form")
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().build();
+//                .httpBasic();
+//        return http.authorizeHttpRequests()
+//                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
+//                .requestMatchers("/", "/**").permitAll()
+//                .and()
+//                .formLogin()
+//                .loginPage("/login")
+//                .defaultSuccessUrl("/design", true)
+////                .loginProcessingUrl("/authenticate")
+////                .usernameParameter("user")
+////                .passwordParameter("pwd")
+//                .and().build();
     }
 }
