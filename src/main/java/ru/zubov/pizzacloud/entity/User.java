@@ -15,12 +15,12 @@ import java.util.List;
 @Entity
 @Data
 @Table(name = "Users")
-@NoArgsConstructor(access= AccessLevel.PRIVATE, force=true)
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private final String username;
     private final String password;
@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private final String zip;
     @Column(name = "phone_number")
     private final String phoneNumber;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
