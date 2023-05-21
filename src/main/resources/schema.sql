@@ -50,6 +50,14 @@ create table if not exists Users (
     phone_number varchar(50) not null
     );
 
+create table if not exists Roles (
+    id identity primary key,
+    role varchar(50) not null,
+    user_id INT references Users(id)
+    );
+
+
+
 -- create table if not exists Ingredient_Ref (
 --     ingredient varchar(6) references Ingredient(id),
 --     pizza bigint not null,
