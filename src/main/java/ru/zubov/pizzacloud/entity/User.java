@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
@@ -16,25 +16,41 @@ import java.util.List;
 @Data
 @Table(name = "Users")
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@RequiredArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private final String username;
-    private final String password;
-    private final String fullname;
-    private final String street;
-    private final String city;
+    private String username;
+    private String password;
+    private String fullname;
+    private String street;
+    private String city;
     @Column(name = "st")
-    private final String state;
-    private final String zip;
+    private String state;
+    private String zip;
     @Column(name = "phone_number")
-    private final String phoneNumber;
+    private String phoneNumber;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private final List<Role> authorities = new ArrayList<>();
+    private final List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+    public User(String username, String password, List<SimpleGrantedAuthority> roles) {
+        this.username = username;
+        this.password = password;
+        authorities.addAll(roles);
+    }
+
+    public User(String username, String password, String fullname, String street, String city, String state, String zip, String phoneNumber) {
+        this.username = username;
+        this.password = password;
+        this.fullname = fullname;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.phoneNumber = phoneNumber;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
