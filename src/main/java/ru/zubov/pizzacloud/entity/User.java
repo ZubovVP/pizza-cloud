@@ -39,9 +39,9 @@ public class User implements UserDetails {
     @JoinTable(name = "users_authorities",
             joinColumns = { @JoinColumn(name = "user_id") },
             inverseJoinColumns = { @JoinColumn(name = "role_id") })
-    private final Set<GrantedAuthority> authorities = new HashSet<>();
+    private final Set<RoleUser> authorities = new HashSet<>();
 
-    public User(String username, String password, List<GrantedAuthority> authorities) {
+    public User(String username, String password, List<RoleUser> authorities) {
         this.username = username;
         this.password = password;
         this.fullname = "";

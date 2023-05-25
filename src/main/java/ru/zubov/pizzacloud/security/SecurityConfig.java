@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import ru.zubov.pizzacloud.entity.Role;
+import ru.zubov.pizzacloud.entity.RoleUser;
 import ru.zubov.pizzacloud.entity.User;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder encoder) {
         List<UserDetails> usersList = new ArrayList<>();
-        Role roleUser = new Role(2L, "ROLE_USER", new HashSet<>());
+        RoleUser roleUser = new RoleUser(2L, "ROLE_USER", new HashSet<>());
         usersList.add(new User(
                 "buzz", encoder.encode("password"),
                 List.of(roleUser)));

@@ -50,15 +50,15 @@ create table if not exists Users (
     phone_number varchar(50) not null
     );
 
-create table if not exists Roles (
-    id identity primary key,
-    name varchar(50) not null,
+create table if not exists Role_User (
+    id INT primary key,
+    rolename varchar(50) not null
     );
 
 create table if not exists Users_Authorities(
-    id identity primary key,
-    user_id bigint references references Users(id),
-    role_id bigint references references Roles(id),
+    id INT primary key,
+    user_id bigint references Users(id),
+    role_id bigint references Role_User(id)
     );
 
 
