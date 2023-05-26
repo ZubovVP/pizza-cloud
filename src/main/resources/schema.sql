@@ -57,8 +57,8 @@ create table if not exists Role_User (
 
 create table if not exists Users_Authorities(
     id INT primary key,
-    user_id bigint references Users(id),
-    role_id bigint references Role_User(id)
+    user_id INT references Users(id),
+    role_id INT references Role_User(id)
     );
 
 
