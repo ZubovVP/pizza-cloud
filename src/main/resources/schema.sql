@@ -61,8 +61,6 @@ create table if not exists Users_Authorities(
     role_id INT references Role_User(id)
     );
 
-
-
 -- create table if not exists Ingredient_Ref (
 --     ingredient varchar(6) references Ingredient(id),
 --     pizza bigint not null,
