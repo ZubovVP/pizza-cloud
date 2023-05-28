@@ -18,7 +18,7 @@ public class PizzaOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotBlank(message = "Delivery name is required")
@@ -44,6 +44,7 @@ public class PizzaOrder implements Serializable {
     private String ccExpiration;
 
     @Digits(integer = 3, fraction = 0, message = "Invalid CVV")
+    @Column(name = "cc_cvv")
     private String ccCVV;
 
     private LocalDateTime placedAt;

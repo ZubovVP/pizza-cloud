@@ -12,6 +12,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 
+import java.time.LocalDateTime;
+
 @Slf4j
 @Controller
 @RequestMapping("/orders")
@@ -35,6 +37,7 @@ public class OrderController {
         if (errors.hasErrors()) {
             return "orderForm";
         }
+        order.setPlacedAt(LocalDateTime.now());
         repository.save(order);
 
         log.info("Order submitted: {}", order);
