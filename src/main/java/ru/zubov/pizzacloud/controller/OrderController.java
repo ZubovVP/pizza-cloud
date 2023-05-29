@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.repository.OrderRepository;
+import ru.zubov.pizzacloud.repository.PizzaRepository;
 
 import java.time.LocalDateTime;
 
@@ -19,10 +20,12 @@ import java.time.LocalDateTime;
 @RequestMapping("/orders")
 @SessionAttributes("pizzaOrder")
 public class OrderController {
-    private final OrderRepository repository;
+    private final OrderRepository orderRepository;
+    private final PizzaRepository pizzaRepository;
 
-    public OrderController(OrderRepository repository) {
-        this.repository = repository;
+    public OrderController(OrderRepository orderRepository, PizzaRepository pizzaRepository) {
+        this.orderRepository = orderRepository;
+        this.pizzaRepository = pizzaRepository;
     }
 
 
@@ -37,8 +40,8 @@ public class OrderController {
         if (errors.hasErrors()) {
             return "orderForm";
         }
+        pizzaRepository.saveAll(order.getPizza());
         order.setPlacedAt(LocalDateTime.now());
-        repository.save(order);
 
         log.info("Order submitted: {}", order);
         sessionStatus.setComplete();

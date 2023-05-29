@@ -19,19 +19,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService(PasswordEncoder encoder) {
-//        List<UserDetails> usersList = new ArrayList<>();
-//        RoleUser roleUser = new RoleUser(2L, "ROLE_USER", new HashSet<>());
-//        usersList.add(new User(
-//                "buzz", encoder.encode("password"),
-//                List.of(roleUser)));
-//        usersList.add(new User(
-//                "woody", encoder.encode("password"),
-//                List.of(roleUser)));
-//        return new InMemoryUserDetailsManager(usersList);
-//    }
-
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepo) {
         return username -> {
