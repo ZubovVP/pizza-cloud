@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
@@ -22,12 +23,13 @@ import java.time.LocalDateTime;
 public class OrderController {
     private final OrderRepository orderRepository;
     private final PizzaRepository pizzaRepository;
+    private final IngredientRepository ingredientRepository;
 
-    public OrderController(OrderRepository orderRepository, PizzaRepository pizzaRepository) {
+    public OrderController(OrderRepository orderRepository, PizzaRepository pizzaRepository, IngredientRepository ingredientRepository) {
         this.orderRepository = orderRepository;
         this.pizzaRepository = pizzaRepository;
+        this.ingredientRepository = ingredientRepository;
     }
-
 
     @GetMapping("/current")
     public String orderForm() {
