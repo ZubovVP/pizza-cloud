@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -22,6 +24,16 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private Type type;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "ingredients_pizza",
+            joinColumns = { @JoinColumn(name = "ingredient_id") },
+            inverseJoinColumns = { @JoinColumn(name = "pizza_id") })
+    private List<Pizza> pizza;
 
     public enum Type {
         SIZE, PROTEIN, VEGGIES, CHEESE, SAUCE
