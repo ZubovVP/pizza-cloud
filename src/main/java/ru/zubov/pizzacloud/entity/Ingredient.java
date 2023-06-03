@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ingredient {
-
     @Id
     private String id;
 
@@ -25,14 +24,7 @@ public class Ingredient {
     @Column(name = "type")
     private Type type;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            })
-    @JoinTable(name = "ingredients_pizza",
-            joinColumns = { @JoinColumn(name = "ingredient_id") },
-            inverseJoinColumns = { @JoinColumn(name = "pizza_id") })
+    @ManyToMany
     private List<Pizza> pizza;
 
     public enum Type {

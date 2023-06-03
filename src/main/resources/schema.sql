@@ -10,9 +10,8 @@ create table if not exists Pizza (
     created_at timestamp not null
     );
 
-create table if not exists Ingredients_Pizza(
-    id INT primary key,
-    ingredient_id INT references Ingredient(id),
+create table if not exists Pizza_Ingredients(
+    ingredients_id varchar(6) references Ingredient(id),
     pizza_id INT references Pizza(id)
     );
 
