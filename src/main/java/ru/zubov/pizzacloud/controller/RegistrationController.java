@@ -6,18 +6,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.zubov.pizzacloud.entity.RegistrationForm;
+import ru.zubov.pizzacloud.repository.RoleRepository;
 import ru.zubov.pizzacloud.repository.UserRepository;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/register")
 public class RegistrationController {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public RegistrationController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public RegistrationController(UserRepository userRepository,RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping
@@ -27,7 +32,7 @@ public class RegistrationController {
 
     @PostMapping
     public String processRegistration(RegistrationForm form) {
-        userRepository.save(form.toUser(passwordEncoder));
+        userRepository.save(form.toUser(passwordEncoder, List.of(roleRepository.findById(1L).orElseThrow())));
         return "redirect:/login";
     }
 }
