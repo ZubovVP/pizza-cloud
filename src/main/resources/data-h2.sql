@@ -1,6 +1,7 @@
 delete from Pizza;
 delete from Pizza_Order;
 delete from Ingredient;
+delete from Role_User;
 
 insert into Ingredient (id, name, type) values ('SIZE25', '25 cm', 'SIZE');
 insert into Ingredient (id, name, type) values ('SIZE32', '32 cm', 'SIZE');
@@ -21,3 +22,6 @@ insert into Ingredient (id, name, type) values ('JACK', 'Monterrey Jack', 'CHEES
 insert into Ingredient (id, name, type) values ('SLSA', 'Salsa', 'SAUCE');
 insert into Ingredient (id, name, type) values ('TMSC', 'Tomato Sauce', 'SAUCE');
 insert into Ingredient (id, name, type) values ('BBQ', 'BBQ', 'SAUCE');
+
+insert into Role_User (id, rolename) values (1, 'USER');
+insert into Role_User (id, rolename) values (0, 'ADMIN');

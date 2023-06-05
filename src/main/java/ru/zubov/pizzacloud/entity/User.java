@@ -19,16 +19,33 @@ import java.util.Set;
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "username")
     private final String username;
+
+    @Column(name = "password")
     private final String password;
+
+    @Column(name = "fullname")
     private final String fullname;
+
+    @Column(name = "street")
     private final String street;
+
+    @Column(name = "city")
     private final String city;
+
+    @Column(name = "st")
     private final String state;
+
+    @Column(name = "zip")
     private final String zip;
+
+    @Column(name = "phone_number")
     private final String phoneNumber;
+
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
