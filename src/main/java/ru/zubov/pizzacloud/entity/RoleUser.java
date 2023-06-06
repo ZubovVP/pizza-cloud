@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -32,5 +33,26 @@ public class RoleUser implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return this.roleName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoleUser roleUser = (RoleUser) o;
+        return Objects.equals(id, roleUser.id) && Objects.equals(roleName, roleUser.roleName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, roleName);
+    }
+
+    @Override
+    public String toString() {
+        return "RoleUser{" +
+                "id=" + id +
+                ", roleName='" + roleName + '\'' +
+                '}';
     }
 }

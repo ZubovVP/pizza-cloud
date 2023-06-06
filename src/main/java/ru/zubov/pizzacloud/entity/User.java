@@ -20,9 +20,9 @@ public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @Column(name = "username")
+    @Column(name = "name")
     private final String username;
 
     @Column(name = "password")
@@ -91,5 +91,21 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", fullname='" + fullname + '\'' +
+                ", street='" + street + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip='" + zip + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", authorities=" + authorities +
+                '}';
     }
 }
