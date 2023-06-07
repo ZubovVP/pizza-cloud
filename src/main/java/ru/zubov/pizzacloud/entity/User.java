@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "Users")
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 @RequiredArgsConstructor
@@ -20,31 +21,31 @@ public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
-    @Column(name = "name")
-    private final String username;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "password")
-    private final String password;
+    private String password;
 
     @Column(name = "fullname")
-    private final String fullname;
+    private String fullname;
 
     @Column(name = "street")
-    private final String street;
+    private String street;
 
     @Column(name = "city")
-    private final String city;
+    private String city;
 
     @Column(name = "st")
-    private final String state;
+    private String state;
 
     @Column(name = "zip")
-    private final String zip;
+    private String zip;
 
     @Column(name = "phone_number")
-    private final String phoneNumber;
+    private String phoneNumber;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {

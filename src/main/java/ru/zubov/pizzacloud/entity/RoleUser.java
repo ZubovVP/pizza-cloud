@@ -16,7 +16,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class RoleUser implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private final Long id;
 
     @Column(name = "rolename")
