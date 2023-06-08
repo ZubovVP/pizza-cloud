@@ -23,5 +23,5 @@ insert into Ingredient (id, name, type) values ('SLSA', 'Salsa', 'SAUCE');
 insert into Ingredient (id, name, type) values ('TMSC', 'Tomato Sauce', 'SAUCE');
 insert into Ingredient (id, name, type) values ('BBQ', 'BBQ', 'SAUCE');
 
-insert into Role_User (id, rolename) values (1, 'USER');
-insert into Role_User (id, rolename) values (0, 'ADMIN');
+insert into Role_User (id, rolename) values (1, 'ROLE_USER"');
+insert into Role_User (id, rolename) values (0, 'ROLE_ADMIN"');

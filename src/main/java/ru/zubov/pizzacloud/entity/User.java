@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -16,7 +15,6 @@ import java.util.Set;
 @Table(name = "Users")
 @Data
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
-@RequiredArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,6 +65,17 @@ public class User implements UserDetails {
         this.zip = "";
         this.phoneNumber = "";
         this.authorities.addAll(authorities);
+    }
+
+    public User(String username, String encode, String fullname, String street, String city, String state, String zip, String phone) {
+        this.username = username;
+        this.password = encode;
+        this.fullname = fullname;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.phoneNumber = phone;
     }
 
     @Override
