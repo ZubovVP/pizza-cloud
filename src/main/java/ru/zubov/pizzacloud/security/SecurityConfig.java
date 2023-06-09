@@ -33,24 +33,12 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         return http.csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
+                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("ROLE_USER"))
                 .requestMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login").permitAll()
                 .defaultSuccessUrl("/design", true)
                 .and().build();
-//                .httpBasic();
-//        return http.authorizeHttpRequests()
-//                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
-//                .requestMatchers("/", "/**").permitAll()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/design", true)
-////                .loginProcessingUrl("/authenticate")
-////                .usernameParameter("user")
-////                .passwordParameter("pwd")
-//                .and().build();
     }
 }
