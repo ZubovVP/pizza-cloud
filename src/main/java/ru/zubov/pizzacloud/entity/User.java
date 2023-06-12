@@ -45,7 +45,7 @@ public class User implements UserDetails {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @ManyToMany(fetch = FetchType.LAZY,
+    @ManyToMany(fetch = FetchType.EAGER,
             cascade = {
                     CascadeType.PERSIST,
                     CascadeType.MERGE

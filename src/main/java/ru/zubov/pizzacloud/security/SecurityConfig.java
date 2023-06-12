@@ -4,16 +4,18 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.repository.UserRepository;
 
 @Configuration
-public class SecurityConfig {
+@EnableWebSecurity
+public class SecurityConfig{
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -22,29 +24,27 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
-//        UserDetails user = new ru.zubov.pizzacloud.entity.User("user", passwordEncoder().encode("password"), List.of(new RoleUser(1L, "ROLE_USER", new HashSet<>())));
+        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
+        manager.createUser(User.withDefaultPasswordEncoder().username("user").password("password").roles("USER").build());
+        return manager;
 
-//                User.builder()
-//                .username("user")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.builder()
-//                .username("admin")
-//                .password(passwordEncoder().encode("password"))
-//                .roles("USER", "ADMIN")
-//                .build();
-//        return new InMemoryUserDetailsManager(user, admin);
-
-        return username -> {
-            User user = userRepository.findByUsername(username);
-            if (user != null) return user;
-            throw new UsernameNotFoundException("User ‘" + username + "’ not found");
-        };
+//        return username -> {
+//            User user = userRepository.findByUsername(username);
+//            if (user != null) return user;
+//            throw new UsernameNotFoundException("User ‘" + username + "’ not found");
+//        };
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+//        http.csrf()
+//                .securityMatcher("/api/**")
+//                .authorizeHttpRequests(authorize -> authorize
+//                        .anyRequest().hasRole("ADMIN")
+//                )
+//                .httpBasic(withDefaults());
+//        return http.build();
 
         return http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
