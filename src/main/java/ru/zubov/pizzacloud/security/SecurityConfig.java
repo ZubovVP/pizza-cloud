@@ -34,13 +34,14 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests()
-                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasRole("USER"))
+                .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasAnyRole("ADMIN", "USER"))
                 .requestMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/design", true)
                 .loginPage("/login").permitAll()
-                .and().build();
+                .and()
+                .build();
     }
 }
