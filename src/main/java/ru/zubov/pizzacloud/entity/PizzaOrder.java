@@ -52,6 +52,9 @@ public class PizzaOrder implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Pizza> pizza = new ArrayList<>();
 
+    @ManyToOne
+    private User user;
+
     public void addPizza(Pizza pizza) {
         this.pizza.add(pizza);
     }

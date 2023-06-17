@@ -30,7 +30,6 @@ public class SecurityConfig{
             throw new UsernameNotFoundException("User ‘" + username + "’ not found");
         };
     }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests()
