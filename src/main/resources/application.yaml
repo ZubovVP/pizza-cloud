@@ -19,3 +19,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
+pizza:
+  orders:
+    pageSize: 10
