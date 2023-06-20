@@ -3,7 +3,6 @@ package ru.zubov.pizzacloud.controller;
 import jakarta.validation.Valid;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,12 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import ru.zubov.pizzacloud.config.OrderProps;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.User;
-import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
-import ru.zubov.pizzacloud.repository.UserRepository;
 
 import java.time.LocalDateTime;
 
@@ -29,20 +27,15 @@ import java.time.LocalDateTime;
 @RequestMapping("/orders")
 @SessionAttributes("pizzaOrder")
 @Setter
-@ConfigurationProperties(prefix="pizza.orders")
 public class OrderController {
-    private int pageSize = 20;
-
     private final OrderRepository orderRepository;
     private final PizzaRepository pizzaRepository;
-    private final IngredientRepository ingredientRepository;
-    private final UserRepository userRepository;
+    private final OrderProps orderProps;
 
-    public OrderController(OrderRepository orderRepository, PizzaRepository pizzaRepository, IngredientRepository ingredientRepository, UserRepository userRepository) {
+    public OrderController(OrderRepository orderRepository, PizzaRepository pizzaRepository, OrderProps orderProps) {
         this.orderRepository = orderRepository;
         this.pizzaRepository = pizzaRepository;
-        this.ingredientRepository = ingredientRepository;
-        this.userRepository = userRepository;
+        this.orderProps = orderProps;
     }
 
     @GetMapping("/current")
@@ -69,7 +62,7 @@ public class OrderController {
     @GetMapping
     public String ordersForUser(
             @AuthenticationPrincipal User user, Model model) {
-        Pageable pageable = PageRequest.of(0, pageSize);
+        Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
         model.addAttribute("orders",
                 orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
         return "orderList";
