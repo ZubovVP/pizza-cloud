@@ -1,4 +1,10 @@
 spring:
+  profiles:
+    active:
+    - prod
+---
+spring:
+  profile: test
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -28,8 +34,7 @@ pizza:
 
 ---
 spring:
-  profiles: prod
-    active: local
+  profile: prod
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
