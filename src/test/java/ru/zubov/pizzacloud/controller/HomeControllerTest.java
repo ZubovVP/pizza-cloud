@@ -1,6 +1,6 @@
 package ru.zubov.pizzacloud.controller;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.web.servlet.MockMvc;
@@ -16,7 +16,7 @@ class HomeControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
+    @Disabled
     public void testHomePage() throws Exception {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())

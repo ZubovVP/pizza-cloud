@@ -1,8 +1,8 @@
 spring:
   application:
-     name: SpringBoot-Multi-Environment
+    name: SpringBoot-Multi-Environment
   profiles:
-    active: '@profileActive@'
+    active: @profileActive@
 ---
 
 #config test
