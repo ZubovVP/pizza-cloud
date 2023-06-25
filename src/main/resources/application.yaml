@@ -3,6 +3,9 @@ spring:
     name: SpringBoot-Multi-Environment
   profiles:
     active: @profileActive@
+pizza:
+  orders:
+    pageSize: 10
 ---
 
 #config test
@@ -33,9 +36,6 @@ spring:
   logging:
     level:
       tacos: DEBUG
-pizza:
-  orders:
-    pageSize: 10
 
 ---
 
@@ -67,6 +67,3 @@ spring:
   logging:
     level:
       tacos: WARN
-pizza:
-  orders:
-    pageSize: 40
