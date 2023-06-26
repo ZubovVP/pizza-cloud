@@ -3,6 +3,9 @@ spring:
     name: SpringBoot-Multi-Environment
   profiles:
     active: @profileActive@
+  logging:
+    level:
+      ru.zubov.pizzacloud: DEBUG
 pizza:
   orders:
     pageSize: 10
@@ -33,10 +36,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-  logging:
-    level:
-      tacos: DEBUG
-
 ---
 
 #config prod
@@ -64,6 +63,3 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-  logging:
-    level:
-      tacos: WARN
