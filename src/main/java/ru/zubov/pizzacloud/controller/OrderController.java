@@ -63,10 +63,6 @@ public class OrderController {
     public String ordersForUser(
             @AuthenticationPrincipal User user, Model model) {
         Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
-        log.warn("aaa");
-        log.debug("bbb");
-        log.info("ccc");
-        log.error("ddd");
         model.addAttribute("orders",
                 orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
         return "orderList";

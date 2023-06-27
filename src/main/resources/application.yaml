@@ -3,9 +3,9 @@ spring:
     name: SpringBoot-Multi-Environment
   profiles:
     active: @profileActive@
-  logging:
-    level:
-      ru.zubov.pizzacloud: DEBUG
+logging:
+  level:
+    ru.zubov.pizzacloud: DEBUG
 pizza:
   orders:
     pageSize: 10
