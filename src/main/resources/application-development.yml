@@ -1,0 +1,27 @@
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+    schema:
+      - schema.sql
+    data:
+      - data-h2.sql
+  sql:
+    init:
+      mode: always
+      platform: h2
+  jpa:
+    hibernate:
+      ddl-auto: none
+logging:
+  level:
+    ru.zubov.pizzacloud: DEBUG
+pizza:
+  orders:
+    pageSize: 10
