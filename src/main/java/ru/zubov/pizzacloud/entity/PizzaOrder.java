@@ -49,10 +49,11 @@ public class PizzaOrder implements Serializable {
 
     private LocalDateTime placedAt;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pizzaOrder", cascade = CascadeType.ALL)
     private List<Pizza> pizza = new ArrayList<>();
 
     @ManyToOne
+    @JoinColumn(name="user_id")
     private User user;
 
     public void addPizza(Pizza pizza) {
