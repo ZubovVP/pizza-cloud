@@ -3,12 +3,13 @@ package ru.zubov.pizzacloud.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path="/api/pizza",
@@ -23,5 +24,14 @@ public class PizzaController {
         PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());
         return repository.findAll(page).getContent();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Pizza> pizzaById(@PathVariable("id") Long id) {
+        Optional<Pizza> optPizza = repository.findById(id);
+        if (optPizza.isPresent()) {
+            return new ResponseEntity<>(optPizza.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 }
