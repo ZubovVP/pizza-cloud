@@ -29,9 +29,6 @@ public class PizzaController {
     @GetMapping("/{id}")
     public ResponseEntity<Pizza> pizzaById(@PathVariable("id") Long id) {
         Optional<Pizza> optPizza = repository.findById(id);
-        if (optPizza.isPresent()) {
-            return new ResponseEntity<>(optPizza.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return optPizza.map(pizza -> new ResponseEntity<>(pizza, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 }

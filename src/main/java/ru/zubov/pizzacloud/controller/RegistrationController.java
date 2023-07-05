@@ -34,7 +34,6 @@ public class RegistrationController {
         User user = userRepository.save(form.toUser(passwordEncoder));
         user.getAuthorities().add(roleRepository.findById(1L).orElseThrow());
         userRepository.save(user);
-
         return "redirect:/login";
     }
 }
