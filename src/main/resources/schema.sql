@@ -37,14 +37,14 @@ create table if not exists Pizza (
     pizza_order_id INT references Pizza_Order(id)
     );
 
-create table if not exists PIZZA_INGREDIENTS(
-    ingredients_id varchar(6) references Ingredient(id),
-    pizza_id INT references Pizza(id)
-    );
-
 create table if not exists Role_User (
     id INT primary key,
     rolename varchar(50) not null
+    );
+
+create table if not exists INGREDIENT_PIZZA(
+    ingredients_id varchar(6) references Ingredient(id),
+    pizza_id INT references Pizza(id)
     );
 
 create table if not exists Users_Authorities(

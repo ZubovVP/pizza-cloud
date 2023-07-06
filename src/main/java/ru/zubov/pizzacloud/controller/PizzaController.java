@@ -19,7 +19,7 @@ import java.util.Optional;
 public class PizzaController {
     private final PizzaRepository repository;
 
-    @GetMapping(params="recent")
+    @GetMapping(params = "recent")
     public Iterable<Pizza> recentPizza() {
         PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());
@@ -29,6 +29,7 @@ public class PizzaController {
     @GetMapping("/{id}")
     public ResponseEntity<Pizza> pizzaById(@PathVariable("id") Long id) {
         Optional<Pizza> optPizza = repository.findById(id);
-        return optPizza.map(pizza -> new ResponseEntity<>(pizza, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+        return optPizza.map(pizza -> new ResponseEntity<>(pizza, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 }

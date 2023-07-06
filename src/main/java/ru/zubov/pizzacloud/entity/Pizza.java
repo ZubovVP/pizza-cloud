@@ -19,7 +19,7 @@ public class Pizza {
     @Size(min = 4, message = "Name must be at least 4 characters long")
     private String name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "pizza")
     @Size(min = 1, message = "You must choose at least 1 ingredient")
     private List<Ingredient> ingredients;
 

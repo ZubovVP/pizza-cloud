@@ -1,5 +1,6 @@
 package ru.zubov.pizzacloud.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +25,11 @@ public class Ingredient {
     @Column(name = "type")
     private Type type;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "ingredient_pizza",
+            joinColumns = { @JoinColumn(name = "ingredients_id") },
+            inverseJoinColumns = { @JoinColumn(name = "pizza_id") })
+    @JsonIgnore
     private List<Pizza> pizza;
 
     public enum Type {
