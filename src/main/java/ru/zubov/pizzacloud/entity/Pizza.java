@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,9 +20,9 @@ public class Pizza {
     @Size(min = 4, message = "Name must be at least 4 characters long")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "pizza")
+    @ManyToMany(mappedBy = "pizza", fetch = FetchType.EAGER)
     @Size(min = 1, message = "You must choose at least 1 ingredient")
-    private List<Ingredient> ingredients;
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();

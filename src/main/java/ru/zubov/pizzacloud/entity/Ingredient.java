@@ -1,12 +1,12 @@
 package ru.zubov.pizzacloud.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,12 +25,11 @@ public class Ingredient {
     @Column(name = "type")
     private Type type;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "ingredient_pizza",
             joinColumns = { @JoinColumn(name = "ingredients_id") },
             inverseJoinColumns = { @JoinColumn(name = "pizza_id") })
-    @JsonIgnore
-    private List<Pizza> pizza;
+    private List<Pizza> pizza = new ArrayList<>();
 
     public enum Type {
         SIZE, PROTEIN, VEGGIES, CHEESE, SAUCE
