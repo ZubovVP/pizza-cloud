@@ -12,9 +12,11 @@ import ru.zubov.pizzacloud.repository.PizzaRepository;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(path="/api/pizza",
-        produces={"application/json", "text/xml"})      //клиент может обрабатывать ответы тольков формате JSON или xml
-@CrossOrigin(origins={"http://pizzacloud:8080", "http://pizzacloud.com"})   //Это обход ограничение, включается заголовки CORS (Cross-Origin Resource Sharing – совместное использование ресурсов между источниками)
+@RequestMapping(path = "/api/pizza",
+        produces = {"application/json", "text/xml"})
+//клиент может обрабатывать ответы тольков формате JSON или xml
+@CrossOrigin(origins = {"http://pizzacloud:8080", "http://pizzacloud.com"})
+//Это обход ограничение, включается заголовки CORS (Cross-Origin Resource Sharing – совместное использование ресурсов между источниками)
 @RequiredArgsConstructor
 public class PizzaController {
     private final PizzaRepository repository;
@@ -31,5 +33,11 @@ public class PizzaController {
         Optional<Pizza> optPizza = repository.findById(id);
         return optPizza.map(pizza -> new ResponseEntity<>(pizza, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping(consumes = "application/json")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Pizza postPizza(@RequestBody Pizza pizza) {
+        return repository.save(pizza);
     }
 }
