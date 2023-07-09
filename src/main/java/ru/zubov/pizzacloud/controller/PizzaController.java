@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.zubov.pizzacloud.entity.Pizza;
+import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
 import java.util.Optional;
@@ -20,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PizzaController {
     private final PizzaRepository repository;
+    private final OrderRepository orderRepository;
 
     @GetMapping(params = "recent")
     public Iterable<Pizza> recentPizza() {
@@ -39,5 +42,13 @@ public class PizzaController {
     @ResponseStatus(HttpStatus.CREATED)
     public Pizza postPizza(@RequestBody Pizza pizza) {
         return repository.save(pizza);
+    }
+
+    @PutMapping(path="/{orderId}", consumes="application/json")
+    public PizzaOrder putOrder(
+            @PathVariable("orderId") Long orderId,
+            @RequestBody PizzaOrder order) {
+        order.setId(orderId);
+        return orderRepository.save(order);
     }
 }
