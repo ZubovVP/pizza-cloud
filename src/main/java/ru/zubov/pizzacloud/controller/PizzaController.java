@@ -1,6 +1,7 @@
 package ru.zubov.pizzacloud.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
@@ -81,5 +82,15 @@ public class PizzaController {
             order.setCcCVV(patch.getCcCVV());
         }
         return orderRepository.save(order);
+    }
+
+    @DeleteMapping("/{orderId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteOrder(@PathVariable("orderId") Long orderId) {
+        try {
+            orderRepository.deleteById(orderId);
+        } catch (EmptyResultDataAccessException e) {
+            throw new IllegalArgumentException();
+        }
     }
 }

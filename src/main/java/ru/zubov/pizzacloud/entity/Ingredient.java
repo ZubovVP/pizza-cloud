@@ -6,9 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @Entity
@@ -24,12 +21,6 @@ public class Ingredient {
     @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private Type type;
-
-    @ManyToMany
-    @JoinTable(name = "ingredient_pizza",
-            joinColumns = { @JoinColumn(name = "ingredients_id") },
-            inverseJoinColumns = { @JoinColumn(name = "pizza_id") })
-    private List<Pizza> pizza = new ArrayList<>();
 
     public enum Type {
         SIZE, PROTEIN, VEGGIES, CHEESE, SAUCE
