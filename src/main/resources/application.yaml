@@ -3,4 +3,7 @@ spring:
     name: SpringBoot-Multi-Environment
   profiles:
     active: @profileActive@
+  data:
+    rest:
+      base-path: /data-api
 ---

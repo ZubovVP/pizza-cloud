@@ -14,7 +14,7 @@ import ru.zubov.pizzacloud.repository.PizzaRepository;
 
 import java.util.Optional;
 
-@RestController
+//@RestController
 @RequestMapping(path = "/api/pizza",
         produces = {"application/json", "text/xml"})
 //клиент может обрабатывать ответы тольков формате JSON или xml
