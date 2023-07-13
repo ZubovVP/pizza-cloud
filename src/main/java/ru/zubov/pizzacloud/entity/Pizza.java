@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@RestResource(rel="pizzas", path="pizza")
 public class Pizza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
