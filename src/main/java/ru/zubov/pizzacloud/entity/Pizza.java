@@ -12,7 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
-@RestResource(rel="pizzas", path="pizza")
+@RestResource(rel="pizzas", path="pizza")       // позволяет поменять endpoint для запроса data rest
 public class Pizza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
