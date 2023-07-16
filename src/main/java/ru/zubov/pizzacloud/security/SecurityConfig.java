@@ -2,7 +2,6 @@ package ru.zubov.pizzacloud.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,8 +34,9 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests()
                 .requestMatchers("/design", "/orders").access(AuthorityAuthorizationManager.hasAnyRole("ADMIN", "USER"))
-                .requestMatchers(HttpMethod.POST, "/api/ingredients").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").hasRole("ADMIN")
+                //включить после настройки каскадного удаления пицц при удаление ингредиентов
+//                .requestMatchers(HttpMethod.POST, "/api/ingredients").hasRole("ADMIN")
+//                .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").hasRole("ADMIN")
                 .requestMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
