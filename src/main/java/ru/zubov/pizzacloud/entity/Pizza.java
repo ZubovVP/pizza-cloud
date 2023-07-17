@@ -21,7 +21,7 @@ public class Pizza {
     @Size(min = 4, message = "Name must be at least 4 characters long")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(name = "ingredient_pizza",
             joinColumns = { @JoinColumn(name = "pizza_id") },
             inverseJoinColumns = { @JoinColumn(name = "ingredients_id") })
