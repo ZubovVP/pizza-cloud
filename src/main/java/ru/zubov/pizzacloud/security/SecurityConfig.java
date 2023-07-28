@@ -2,6 +2,7 @@ package ru.zubov.pizzacloud.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,6 +38,10 @@ public class SecurityConfig{
                 //включить после настройки каскадного удаления пицц при удаление ингредиентов
 //                .requestMatchers(HttpMethod.POST, "/api/ingredients").hasRole("ADMIN")
 //                .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/ingredients")
+                .hasAuthority("SCOPE_writeIngredients")
+                .requestMatchers(HttpMethod.DELETE, "/api//ingredients")
+                .hasAuthority("SCOPE_deleteIngredients")
                 .requestMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
@@ -44,6 +49,7 @@ public class SecurityConfig{
                 .defaultSuccessUrl("/design", true)
                 .loginPage("/login").permitAll()
                 .and()
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt())
                 .build();
     }
 }
