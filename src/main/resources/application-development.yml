@@ -1,4 +1,16 @@
 spring:
+  spring:
+    security:
+      oauth2:
+        client:
+          registration:
+            pizza-admin-client:
+              provider: pizzacloud
+              client-id: pizza-admin-client
+              client-secret: secret
+              authorization-grant-type: authorization_code
+              redirect-uri: "http://127.0.0.1:9090/login/oauth2/code/{registrationId}"
+              scope: writeIngredients,deleteIngredients,openid
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -19,11 +31,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          jwk-set-uri: http://localhost:9000/oauth2/jwks
 logging:
   level:
     ru.zubov.pizzacloud: DEBUG

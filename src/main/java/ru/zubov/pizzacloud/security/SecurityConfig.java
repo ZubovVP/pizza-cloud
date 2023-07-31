@@ -2,11 +2,9 @@ package ru.zubov.pizzacloud.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authorization.AuthorityAuthorizationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,9 +13,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.repository.UserRepository;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig{
+public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -32,6 +32,7 @@ public class SecurityConfig{
             throw new UsernameNotFoundException("User ‘" + username + "’ not found");
         };
     }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable().authorizeHttpRequests()
@@ -39,10 +40,6 @@ public class SecurityConfig{
                 //включить после настройки каскадного удаления пицц при удаление ингредиентов
 //                .requestMatchers(HttpMethod.POST, "/api/ingredients").hasRole("ADMIN")
 //                .requestMatchers(HttpMethod.DELETE, "/api/ingredients/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/ingredients")
-                .hasAuthority("SCOPE_writeIngredients")
-                .requestMatchers(HttpMethod.DELETE, "/api//ingredients")
-                .hasAuthority("SCOPE_deleteIngredients")
                 .requestMatchers("/", "/**").permitAll()
                 .and()
                 .formLogin()
@@ -50,7 +47,19 @@ public class SecurityConfig{
                 .defaultSuccessUrl("/design", true)
                 .loginPage("/login").permitAll()
                 .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .build();
+    }
+
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests(
+                        authorizeRequests -> authorizeRequests.anyRequest().authenticated()
+                )
+                .oauth2Login(
+                        oauth2Login ->
+                                oauth2Login.loginPage("/oauth2/authorization/taco-admin-client"))
+                .oauth2Client(withDefaults());
+        return http.build();
     }
 }
