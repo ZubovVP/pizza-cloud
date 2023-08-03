@@ -1,4 +1,15 @@
 spring:
+#  security:
+#    oauth2:
+#      client:
+#        provider:
+#          pizzacloud:
+#            issuer-uri: http://authserver:9000
+#            authorization-uri: http://authserver:9000/oauth2/authorize
+#            token-uri: http://authserver:9000/oauth2/token
+#            jwk-set-uri: http://authserver:9000/oauth2/jwks
+#            user-info-uri: http://authserver:9000/userinfo
+#            user-name-attribute: sub
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html

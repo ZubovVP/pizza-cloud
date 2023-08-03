@@ -13,8 +13,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.repository.UserRepository;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -50,16 +48,16 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests(
-                        authorizeRequests -> authorizeRequests.anyRequest().authenticated()
-                )
-                .oauth2Login(
-                        oauth2Login ->
-                                oauth2Login.loginPage("/oauth2/authorization/taco-admin-client"))
-                .oauth2Client(withDefaults());
-        return http.build();
-    }
+//    @Bean
+//    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests(
+//                        authorizeRequests -> authorizeRequests.anyRequest().authenticated()
+//                )
+//                .oauth2Login(
+//                        oauth2Login ->
+//                                oauth2Login.loginPage("/oauth2/authorization/taco-admin-client"))
+//                .oauth2Client(withDefaults());
+//        return http.build();
+//    }
 }
