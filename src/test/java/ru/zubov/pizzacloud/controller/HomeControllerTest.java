@@ -29,4 +29,13 @@ class HomeControllerTest {
                 .andExpect(content().string(
                         containsString("Welcome to...")));
     }
+
+    @Test
+    public void testLoginPage() throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("login"))
+                .andExpect(content().string(
+                        containsString("New here? Click")));
+    }
 }
