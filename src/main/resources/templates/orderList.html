@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Taco Cloud</title>
+    <link rel="stylesheet" th:href="@{/styles.css}"/>
+</head>
+<body>
+    <h1>All orders</h1>
+    <img th:src="@{/images/PizzaCloudSmall.png}"/>
+    <h3>Your orders:</h3>
+    <a th:href="@{/design}" id="another">Design another pizza</a><br/>
+    <table>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:name="${order.deliveryName}">
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</body>
+</html>

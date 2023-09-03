@@ -66,6 +66,6 @@ public class OrderController {
         Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
         model.addAttribute("orders",
                 orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
-        return "orderForm";
+        return "orderList";
     }
 }

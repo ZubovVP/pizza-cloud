@@ -56,7 +56,7 @@ class OrderControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("orderList"))
                 .andExpect(content().string(
-                        containsString("Your orders")));
+                        containsString("Your orders:")));
     }
 
 
