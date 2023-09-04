@@ -61,9 +61,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public String ordersForUser(
-            @AuthenticationPrincipal User user, Model model) {
-        Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
+    public String ordersForUser(int page, @AuthenticationPrincipal User user, Model model) {
+        Pageable pageable = PageRequest.of(page, orderProps.getPageSize());
         model.addAttribute("orders",
                 orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
         return "orderList";
