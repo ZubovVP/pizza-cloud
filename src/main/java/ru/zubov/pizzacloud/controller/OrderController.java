@@ -9,10 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import ru.zubov.pizzacloud.config.OrderProps;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
@@ -61,7 +58,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public String ordersForUser(int page, @AuthenticationPrincipal User user, Model model) {
+    public String ordersForUser(@RequestParam(defaultValue = "1") Integer page, @AuthenticationPrincipal User user, Model model) {
         Pageable pageable = PageRequest.of(page, orderProps.getPageSize());
         model.addAttribute("orders",
                 orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
