@@ -11,7 +11,7 @@
 <h3>
     <div th:if="${not #lists.isEmpty(orders)}">
         <span>User: </span>
-        <span th:text="${orders.user.fullname}"></span>
+        <span th:text="${orders[0].user.fullname}"></span>
     </div>
 </h3>
 <h3>Your orders:</h3>

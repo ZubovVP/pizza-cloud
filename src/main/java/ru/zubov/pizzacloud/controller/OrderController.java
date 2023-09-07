@@ -58,7 +58,7 @@ public class OrderController {
     }
 
     @GetMapping
-    public String ordersForUser(@RequestParam(defaultValue = "1") Integer page, @AuthenticationPrincipal User user, Model model) {
+    public String ordersForUser(@RequestParam(defaultValue = "0") Integer page, @AuthenticationPrincipal User user, Model model) {
         Pageable pageable = PageRequest.of(page, orderProps.getPageSize());
         model.addAttribute("orders",
                 orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));

@@ -20,5 +20,5 @@ public interface OrderRepository extends CrudRepository<PizzaOrder, Long> {
     @Query("SELECT o FROM PizzaOrder o where o.deliveryCity='Seattle'")
     List<PizzaOrder> readOrdersDeliveredInSeattle();
 
-    List<PizzaOrder> findByUserOrderByPlacedAtDesc(User use, Pageable pageable);
+    List<PizzaOrder> findByUserOrderByPlacedAtDesc(User user, Pageable pageable);
 }
