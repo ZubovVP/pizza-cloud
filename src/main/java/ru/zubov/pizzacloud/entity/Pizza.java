@@ -31,7 +31,7 @@ public class Pizza {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="pizza_order_id")
     private PizzaOrder pizzaOrder;
 
