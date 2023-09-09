@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Data
 @Entity
+@EqualsAndHashCode
 public class PizzaOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +52,7 @@ public class PizzaOrder implements Serializable {
     private LocalDateTime placedAt;
 
 //    @OneToMany(orphanRemoval = true, mappedBy = "pizzaOrder", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    @OneToMany(mappedBy = "pizzaOrder", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "pizzaOrder", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Pizza> pizza = new ArrayList<>();
 
     @ManyToOne

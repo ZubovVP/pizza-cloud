@@ -1,7 +1,6 @@
 package ru.zubov.pizzacloud.controller;
 
 import jakarta.validation.Valid;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +22,6 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("pizzaOrder")
-@Setter
 public class OrderController {
     private final OrderRepository orderRepository;
     private final PizzaRepository pizzaRepository;

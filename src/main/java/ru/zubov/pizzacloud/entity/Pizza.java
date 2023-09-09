@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Data
 @Entity
+@EqualsAndHashCode
 //@RestResource(rel="pizzas", path="pizza")       // позволяет поменять endpoint для запроса data rest
 public class Pizza {
     @Id
@@ -31,7 +33,7 @@ public class Pizza {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="pizza_order_id")
     private PizzaOrder pizzaOrder;
 
