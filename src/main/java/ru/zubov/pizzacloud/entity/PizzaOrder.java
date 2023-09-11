@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.CreditCardNumber;
 
 import java.io.Serializable;
@@ -15,7 +14,6 @@ import java.util.List;
 
 @Data
 @Entity
-@EqualsAndHashCode
 public class PizzaOrder implements Serializable {
     private static final long serialVersionUID = 1L;
 

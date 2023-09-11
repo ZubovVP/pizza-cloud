@@ -45,7 +45,6 @@ public class OrderController {
             return "orderForm";
         }
 
-        pizzaRepository.saveAll(order.getPizza());
         order.setPlacedAt(LocalDateTime.now());
         order.setUser(user);
 

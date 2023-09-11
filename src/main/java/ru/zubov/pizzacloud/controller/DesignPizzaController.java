@@ -1,6 +1,7 @@
 package ru.zubov.pizzacloud.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import ru.zubov.pizzacloud.entity.Ingredient.Type;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
+import ru.zubov.pizzacloud.repository.PizzaRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,14 +20,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/design")
 @SessionAttributes("pizzaOrder")
 public class DesignPizzaController {
     private final IngredientRepository ingredientRepository;
-
-    public DesignPizzaController(IngredientRepository ingredientRepository) {
-        this.ingredientRepository = ingredientRepository;
-    }
+    private final PizzaRepository pizzaRepository;
 
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
@@ -57,6 +57,7 @@ public class DesignPizzaController {
         if (errors.hasErrors()) {
             return "design";
         }
+        pizzaRepository.save(pizza);
         pizzaOrder.addPizza(pizza);
         log.info("Processing pizza: {}", pizza);
 

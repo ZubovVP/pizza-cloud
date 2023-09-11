@@ -16,3 +16,9 @@ spring:
   data:
     rest:
       base-path: /data-api
+  jpa:
+    properties:
+      hibernate:
+        show_sql=true: true
+        use_sql_comments: true
+        format_sql: true
