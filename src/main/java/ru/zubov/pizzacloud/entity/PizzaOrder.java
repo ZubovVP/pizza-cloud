@@ -49,7 +49,8 @@ public class PizzaOrder implements Serializable {
 
     private LocalDateTime placedAt;
 
-    @OneToMany(orphanRemoval = true, mappedBy = "pizzaOrder")
+    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JoinColumn(name = "pizza_order_id")
     private List<Pizza> pizza = new ArrayList<>();
 
     @ManyToOne
