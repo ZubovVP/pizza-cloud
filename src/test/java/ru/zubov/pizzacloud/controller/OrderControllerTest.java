@@ -13,12 +13,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.zubov.pizzacloud.config.OrderProps;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.repository.OrderRepository;
-import ru.zubov.pizzacloud.repository.PizzaRepository;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -35,19 +37,19 @@ class OrderControllerTest {
     private OrderRepository orderRepository;
 
     @MockBean
-    private PizzaRepository pizzaRepository;
-
-    @MockBean
     private OrderProps orderProps;
 
 
     @Test
-    public void testHomePage() throws Exception {
+    public void testOrdersPage() throws Exception {
         Mockito.when(this.orderProps.getPageSize()).thenReturn(20);
 
         Pageable pageable = PageRequest.of(0, orderProps.getPageSize());
 
         PizzaOrder pizzaOrder = new PizzaOrder();
+        User user = mock(User.class);
+        when(user.getFullname()).thenReturn("abc");
+        pizzaOrder.setUser(user);
 
         Mockito.when(this.orderRepository.findByUserOrderByPlacedAtDesc(null, pageable)).thenReturn(List.of(pizzaOrder));
 

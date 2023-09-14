@@ -14,7 +14,6 @@ import ru.zubov.pizzacloud.config.OrderProps;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.repository.OrderRepository;
-import ru.zubov.pizzacloud.repository.PizzaRepository;
 
 import java.time.LocalDateTime;
 
@@ -24,12 +23,10 @@ import java.time.LocalDateTime;
 @SessionAttributes("pizzaOrder")
 public class OrderController {
     private final OrderRepository orderRepository;
-    private final PizzaRepository pizzaRepository;
     private final OrderProps orderProps;
 
-    public OrderController(OrderRepository orderRepository, PizzaRepository pizzaRepository, OrderProps orderProps) {
+    public OrderController(OrderRepository orderRepository, OrderProps orderProps) {
         this.orderRepository = orderRepository;
-        this.pizzaRepository = pizzaRepository;
         this.orderProps = orderProps;
     }
 
@@ -57,8 +54,7 @@ public class OrderController {
     @GetMapping
     public String ordersForUser(@RequestParam(defaultValue = "0") Integer page, @AuthenticationPrincipal User user, Model model) {
         Pageable pageable = PageRequest.of(page, orderProps.getPageSize());
-        model.addAttribute("orders",
-                orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+        model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
         return "orderList";
     }
 }
