@@ -1,5 +1,7 @@
 package ru.zubov.pizzacloud.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +10,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.validation.MapBindingResult;
+import ru.zubov.pizzacloud.entity.Pizza;
+import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
+import java.util.HashMap;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(DesignPizzaController.class)
@@ -29,6 +37,17 @@ class DesignPizzaControllerTest {
     @MockBean
     private PizzaRepository pizzaRepository;
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private ObjectMapper mapper;
+
+    private String asJsonString(Object animalDto) {
+        try {
+            return mapper.writeValueAsString(animalDto);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     public void showDesignForm() throws Exception {
@@ -37,5 +56,17 @@ class DesignPizzaControllerTest {
                 .andExpect(view().name("design"))
                 .andExpect(content().string(
                         containsString("Design your pizza!")));
+    }
+
+    @Test
+    public void processPizza() throws Exception {
+        mockMvc.perform(post("/design")
+                        .param("pizza", asJsonString(new Pizza()))
+                        .param("errors", asJsonString(new MapBindingResult(new HashMap<>(), "")))
+                        .param("pizzaOrder", asJsonString(new PizzaOrder()))
+
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("redirect:/orders/current"));
     }
 }
