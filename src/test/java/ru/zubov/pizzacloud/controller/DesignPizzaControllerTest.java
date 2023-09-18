@@ -48,7 +48,7 @@ class DesignPizzaControllerTest {
     private ObjectMapper mapper;
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 
