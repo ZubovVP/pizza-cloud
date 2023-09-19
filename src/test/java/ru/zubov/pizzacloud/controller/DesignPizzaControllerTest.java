@@ -1,6 +1,5 @@
 package ru.zubov.pizzacloud.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +22,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(DesignPizzaController.class)
@@ -69,23 +69,12 @@ class DesignPizzaControllerTest {
                         containsString("Design your pizza!")));
     }
 
-//    @Test
-//    public void processPizza() throws Exception {
-//        mockMvc.perform(post("/design")
-//                        .param("pizza", asJsonString(new Pizza()))
-//                        .param("errors", asJsonString(new MapBindingResult(new HashMap<>(), "")))
-//                        .param("pizzaOrder", asJsonString(new PizzaOrder()))
-//
-//                )
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("redirect:/orders/current"));
-//    }
-
-    private String asJsonString(Object animalDto) {
-        try {
-            return mapper.writeValueAsString(animalDto);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    @Test
+    public void processPizza() throws Exception {
+        mockMvc.perform(post("/design")
+                        .param("pizza.id", "123")
+                )
+                .andExpect(status().isOk())
+                .andExpect(view().name("redirect:/orders/current"));
     }
 }

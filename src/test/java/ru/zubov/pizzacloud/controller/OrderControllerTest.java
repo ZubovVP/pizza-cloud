@@ -19,6 +19,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.config.OrderProps;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.User;
+import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 
 import java.util.List;
@@ -45,6 +46,9 @@ class OrderControllerTest {
 
     @MockBean
     private OrderProps orderProps;
+
+    @MockBean
+    private IngredientRepository ingredientRepository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
