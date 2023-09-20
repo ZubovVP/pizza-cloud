@@ -15,8 +15,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.zubov.pizzacloud.entity.Ingredient;
+import ru.zubov.pizzacloud.entity.Pizza;
+import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
+
+import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -71,10 +76,18 @@ class DesignPizzaControllerTest {
 
     @Test
     public void processPizza() throws Exception {
+        PizzaOrder pizzaOrder = new PizzaOrder();
+        pizzaOrder.setId(111L);
+
+        Pizza pizza = new Pizza();
+        pizza.setName("Pizza_name");
+        pizza.setId(222L);
+        pizza.setIngredients(List.of(new Ingredient()));
         mockMvc.perform(post("/design")
-                        .param("pizza.id", "123")
+                        .flashAttr("pizzaOrder", pizzaOrder)
+                        .flashAttr("pizza", pizza)
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/orders/current"));
     }
 }
