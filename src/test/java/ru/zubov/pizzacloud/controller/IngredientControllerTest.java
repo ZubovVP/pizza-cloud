@@ -26,7 +26,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc(addFilters = false)
 @ActiveProfiles("development")
 class IngredientControllerTest {
-
     @Autowired
     private MockMvc mvc;
 
@@ -40,7 +39,8 @@ class IngredientControllerTest {
 
         when(ingredientRepository.findAll()).thenReturn(List.of(ingredient));
 
-        mvc.perform(get("/api/ingredients")).andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))
+        mvc.perform(get("/api/ingredients"))
+                .andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))
                 .andExpect(jsonPath("$[0].id", Matchers.equalTo("id")))
                 .andExpect(jsonPath("$[0].name", Matchers.equalTo("name")))
                 .andExpect(jsonPath("$[0].type").value("PROTEIN"));

@@ -36,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc(addFilters = false)
 class OrderControllerTest {
-
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
@@ -87,6 +86,14 @@ class OrderControllerTest {
                 .andExpect(content().string(
                         containsString("Your orders:")));
     }
-
-
+    @Test
+    public void testCurrentPage() throws Exception {
+        PizzaOrder pizzaOrder = new PizzaOrder();
+        mockMvc.perform(get("/orders/current")
+                        .flashAttr("pizzaOrder", pizzaOrder))
+                .andExpect(status().isOk())
+                .andExpect(view().name("orderForm"))
+                .andExpect(content().string(
+                        containsString("Order your pizza creations!")));
+    }
 }
