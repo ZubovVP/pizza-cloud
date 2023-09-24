@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -17,7 +19,7 @@ import ru.zubov.pizzacloud.repository.IngredientRepository;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -33,8 +35,7 @@ class IngredientControllerTest {
     private IngredientRepository ingredientRepository;
 
     @Test
-    public void getAllEmployeesAPI() throws Exception
-    {
+    public void getAllEmployeesAPI() throws Exception {
         Ingredient ingredient = new Ingredient("id", "name", Ingredient.Type.PROTEIN);
 
         when(ingredientRepository.findAll()).thenReturn(List.of(ingredient));
@@ -44,6 +45,25 @@ class IngredientControllerTest {
                 .andExpect(jsonPath("$[0].id", Matchers.equalTo("id")))
                 .andExpect(jsonPath("$[0].name", Matchers.equalTo("name")))
                 .andExpect(jsonPath("$[0].type").value("PROTEIN"));
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void postCreateIngredient() throws Exception {
+        Ingredient ingredient = new Ingredient("id", "name", Ingredient.Type.PROTEIN);
+
+        mvc.perform(post("/api/ingredients")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(ingredient)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    public void deleteDeleteIngredient() throws Exception {
+        mvc.perform(delete("/api/ingredients/{id}", "123")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
     }
 
     public static String asJsonString(final Object obj) {
