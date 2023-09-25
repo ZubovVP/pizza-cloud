@@ -17,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.config.OrderProps;
+import ru.zubov.pizzacloud.entity.Ingredient;
+import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
@@ -27,9 +29,9 @@ import java.util.List;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(OrderController.class)
@@ -86,6 +88,7 @@ class OrderControllerTest {
                 .andExpect(content().string(
                         containsString("Your orders:")));
     }
+
     @Test
     public void testCurrentPage() throws Exception {
         PizzaOrder pizzaOrder = new PizzaOrder();
@@ -95,5 +98,25 @@ class OrderControllerTest {
                 .andExpect(view().name("orderForm"))
                 .andExpect(content().string(
                         containsString("Order your pizza creations!")));
+    }
+
+    @Test
+    public void processOrder() throws Exception {
+        PizzaOrder pizzaOrder = mock(PizzaOrder.class);
+        pizzaOrder.setId(111L);
+
+        Pizza pizza = new Pizza();
+        pizza.setName("Pizza_name");
+        pizza.setId(222L);
+        pizza.setIngredients(List.of(new Ingredient()));
+        mockMvc.perform(post("/orders")
+                        .flashAttr("pizzaOrder", pizzaOrder)
+                        .flashAttr("pizza", pizza)
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+        verify(pizzaOrder, times(1)).setPlacedAt(any());
+        verify(pizzaOrder, times(1)).setUser(any());
+        verify(orderRepository, times(1)).save(pizzaOrder);
     }
 }
