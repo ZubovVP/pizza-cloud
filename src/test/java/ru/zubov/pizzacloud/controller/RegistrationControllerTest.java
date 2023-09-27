@@ -14,14 +14,23 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import ru.zubov.pizzacloud.entity.RoleUser;
+import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.RoleRepository;
 import ru.zubov.pizzacloud.repository.UserRepository;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(RegistrationController.class)
@@ -67,5 +76,18 @@ class RegistrationControllerTest {
                 .andExpect(view().name("registration"))
                 .andExpect(content().string(
                         containsString("Register")));
+    }
+
+    @Test
+    public void postRegisterForm() throws Exception {
+        User user = new User("testName", "123", List.of());
+        when(userRepository.save(any())).thenReturn(user);
+        when(roleRepository.findById(1L)).thenReturn(Optional.of(new RoleUser(1L, "role", Set.of())));
+
+        mockMvc.perform(post("/register"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/login"));
+
+        verify(userRepository, times(1)).save(user);
     }
 }
