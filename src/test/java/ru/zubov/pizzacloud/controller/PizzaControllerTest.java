@@ -11,9 +11,14 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.zubov.pizzacloud.IngredientByIdConverter;
+import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,6 +45,8 @@ class PizzaControllerTest {
 
     @Test
     void testDelete() throws Exception {
+        when(repository.findById(any())).thenReturn(Optional.of(new Pizza()));
+
         mockMvc.perform(get("/api/pizza/1")
                 .header("Access-Control-Request-Method", "GET")
                 .header("Origin", "http://pizzacloud.com"))
