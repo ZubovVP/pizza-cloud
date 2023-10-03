@@ -25,7 +25,7 @@ public class PizzaController {
     private final PizzaRepository repository;
     private final OrderRepository orderRepository;
 
-    @GetMapping(params = "recent")
+    @GetMapping()
     public Iterable<Pizza> recentPizza() {
         PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());

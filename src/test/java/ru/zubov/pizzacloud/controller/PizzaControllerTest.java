@@ -1,5 +1,6 @@
 package ru.zubov.pizzacloud.controller;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -26,6 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PizzaController.class)
@@ -69,10 +72,23 @@ class PizzaControllerTest {
 
         when(repository.findAll(any(PageRequest.class))).thenReturn(pageable);
 
-        MvcResult result = mockMvc.perform(get("/api/pizza")
+        MvcResult result = mockMvc.perform(get("/api/pizza?recent=123")
                 .header("Access-Control-Request-Method", "GET")
                 .header("Origin", "http://pizzacloud.com")).andReturn();
         byte[] contentAsByteArray = result.getResponse().getContentAsByteArray();
         Assertions.assertTrue(contentAsByteArray.length > 0);
+    }
+
+    @Test
+    void testCreatePizza() throws Exception {
+        JSONObject pizzaJson = new JSONObject();
+        pizzaJson.put("id", "123");
+
+        MvcResult result = mockMvc.perform(post("/api/pizza")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(pizzaJson.toString())
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isCreated())
+                .andReturn();
     }
 }
