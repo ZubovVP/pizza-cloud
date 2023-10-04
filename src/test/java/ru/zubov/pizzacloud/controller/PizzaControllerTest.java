@@ -80,6 +80,16 @@ class PizzaControllerTest {
     }
 
     @Test
+    void testFindById() throws Exception {
+        when(repository.findById(any())).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/pizza/123")
+                .header("Access-Control-Request-Method", "GET")
+                .header("Origin", "http://pizzacloud.com"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     void testCreatePizza() throws Exception {
         JSONObject pizzaJson = new JSONObject();
         pizzaJson.put("id", "123");
