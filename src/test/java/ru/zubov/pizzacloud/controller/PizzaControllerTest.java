@@ -1,7 +1,6 @@
 package ru.zubov.pizzacloud.controller;
 
 import org.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +23,14 @@ import ru.zubov.pizzacloud.repository.PizzaRepository;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PizzaController.class)
@@ -72,11 +74,12 @@ class PizzaControllerTest {
 
         when(repository.findAll(any(PageRequest.class))).thenReturn(pageable);
 
-        MvcResult result = mockMvc.perform(get("/api/pizza?recent=123")
-                .header("Access-Control-Request-Method", "GET")
-                .header("Origin", "http://pizzacloud.com")).andReturn();
-        byte[] contentAsByteArray = result.getResponse().getContentAsByteArray();
-        Assertions.assertTrue(contentAsByteArray.length > 0);
+        mockMvc.perform(get("/api/pizza?recent=123")
+                        .header("Access-Control-Request-Method", "GET")
+                        .header("Origin", "http://pizzacloud.com"))
+                .andExpect(jsonPath("$", hasSize(1)))
+                .andExpect(jsonPath("$[0].id", equalTo(123))
+        );
     }
 
     @Test
@@ -84,8 +87,8 @@ class PizzaControllerTest {
         when(repository.findById(any())).thenReturn(Optional.empty());
 
         mockMvc.perform(get("/api/pizza/123")
-                .header("Access-Control-Request-Method", "GET")
-                .header("Origin", "http://pizzacloud.com"))
+                        .header("Access-Control-Request-Method", "GET")
+                        .header("Origin", "http://pizzacloud.com"))
                 .andExpect(status().isNotFound());
     }
 
