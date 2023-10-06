@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import ru.zubov.pizzacloud.IngredientByIdConverter;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.repository.OrderRepository;
@@ -26,9 +25,9 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -79,7 +78,7 @@ class PizzaControllerTest {
                         .header("Origin", "http://pizzacloud.com"))
                 .andExpect(jsonPath("$", hasSize(1)))
                 .andExpect(jsonPath("$[0].id", equalTo(123))
-        );
+                );
     }
 
     @Test
@@ -97,11 +96,26 @@ class PizzaControllerTest {
         JSONObject pizzaJson = new JSONObject();
         pizzaJson.put("id", "123");
 
-        MvcResult result = mockMvc.perform(post("/api/pizza")
+        mockMvc.perform(post("/api/pizza")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(pizzaJson.toString())
                         .characterEncoding("utf-8"))
-                .andExpect(status().isCreated())
-                .andReturn();
+                .andExpect(status().isCreated());
+
+        verify(repository, times(1)).save(argThat(pizza -> pizza.getId() == 123L));
+    }
+
+    @Test
+    void testSaveOrder() throws Exception {
+        JSONObject pizzaJson = new JSONObject();
+        pizzaJson.put("id", "111");
+
+        mockMvc.perform(put("/api/pizza/123")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(pizzaJson.toString())
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isOk());
+
+        verify(orderRepository, times(1)).save(argThat(order -> order.getId() == 123L));
     }
 }
