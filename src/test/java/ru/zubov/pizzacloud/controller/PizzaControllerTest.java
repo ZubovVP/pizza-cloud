@@ -176,4 +176,13 @@ class PizzaControllerTest {
 
         verify(orderRepository, times(1)).save(any());
     }
+
+    @Test
+    void testDeleteOrderPizza() throws Exception {
+        mockMvc.perform(delete("/api/pizza/{orderId}", 123)
+                        .characterEncoding("utf-8"))
+                .andExpect(status().isNoContent());
+
+        verify(orderRepository, times(1)).deleteById(123L);
+    }
 }
