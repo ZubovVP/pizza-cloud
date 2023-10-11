@@ -25,7 +25,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -79,6 +79,8 @@ class IngredientControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(ingredient)))
                 .andExpect(status().isCreated());
+
+        verify(ingredientRepository, times(1)).save(argThat(i -> i.getType() == Ingredient.Type.PROTEIN));
     }
 
     @Test
@@ -87,6 +89,7 @@ class IngredientControllerTest {
         mvc.perform(delete("/api/ingredients/{id}", "123")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
+        verify(ingredientRepository, times(1)).deleteById("123");
     }
 
     public static String asJsonString(final Object obj) {

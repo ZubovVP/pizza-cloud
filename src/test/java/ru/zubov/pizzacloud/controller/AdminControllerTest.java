@@ -54,7 +54,7 @@ class AdminControllerTest {
         mockMvc.perform(post("/admin/deleteOrders"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/admin"));
-        verify(adminService, times(1)).deleteAllOrders();
 
+        verify(adminService, times(1)).deleteAllOrders();
     }
 }
