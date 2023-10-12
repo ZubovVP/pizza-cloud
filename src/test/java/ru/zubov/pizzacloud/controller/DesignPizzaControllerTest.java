@@ -1,6 +1,5 @@
 package ru.zubov.pizzacloud.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,10 +46,6 @@ class DesignPizzaControllerTest {
 
     @MockBean
     private PizzaRepository pizzaRepository;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    @Autowired
-    private ObjectMapper mapper;
 
     @BeforeEach
     public void setup() {
