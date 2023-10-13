@@ -1,6 +1,7 @@
 package ru.zubov.pizzacloud.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +22,10 @@ import java.time.LocalDateTime;
 @Controller
 @RequestMapping("/orders")
 @SessionAttributes("pizzaOrder")
+@RequiredArgsConstructor
 public class OrderController {
     private final OrderRepository orderRepository;
     private final OrderProps orderProps;
-
-    public OrderController(OrderRepository orderRepository, OrderProps orderProps) {
-        this.orderRepository = orderRepository;
-        this.orderProps = orderProps;
-    }
 
     @GetMapping("/current")
     public String orderForm() {
