@@ -10,4 +10,5 @@
       "type": "java.lang.Integer",
       "description": "Sets the maximum number of orders to display in a list."
     }
-] }
+]
+}
