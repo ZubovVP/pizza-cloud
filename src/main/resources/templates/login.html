@@ -2,22 +2,30 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Taco Cloud</title>
+    <title>Pizza Cloud</title>
 </head>
 <body>
 <h1>Login</h1>
-<img th:src="@{/images/PizzaCloudSmall.png}"/>
-<div th:if="${error}">
-    Unable to login. Check your username and password.
+<div style="text-align: center">
+    <img th:src="@{/images/PizzaCloudSmall.png}"/>
+    <div th:if="${error}">
+        Unable to login. Check your username and password.
+    </div>
+    <div style="width: 250px; margin-left: auto; margin-right: auto">
+        <div>
+            <p>New here? Click
+                <a th:href="@{/register}">here</a> to register.</p>
+        </div>
+        <form method="POST" th:action="@{/login}" id="loginForm">
+            <label for="username" style="font-weight: bold">Username: </label>
+            <input type="text" name="username" id="username"/><br/>
+            <label for="password" style="font-weight: bold">Password: </label>
+            <input type="password" name="password" id="password" autocomplete="on"/><br/>
+            <div>
+                <input type="submit" value="Login"/>
+            </div>
+        </form>
+    </div>
 </div>
-<p>New here? Click
-    <a th:href="@{/register}">here</a> to register.</p>
-<form method="POST" th:action="@{/login}" id="loginForm">
-    <label for="username">Username: </label>
-    <input type="text" name="username" id="username"/><br/>
-    <label for="password">Password: </label>
-    <input type="password" name="password" id="password" autocomplete="on"/><br/>
-    <input type="submit" value="Login"/>
-</form>
 </body>
 </html>
