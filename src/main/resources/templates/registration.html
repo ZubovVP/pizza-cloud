@@ -2,31 +2,93 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Taco Cloud</title>
+    <title>Pizza Cloud</title>
 </head>
 <body>
 <h1>Register</h1>
-<img th:src="@{/images/TacoCloud.png}"/>
-<form method="POST" th:action="@{/register}" id="registerForm">
-    <label for="username">Username: </label>
-    <input type="text" name="username"/><br/>
-    <label for="password">Password: </label>
-    <input type="password" name="password"/><br/>
-    <label for="confirm">Confirm password: </label>
-    <input type="password" name="confirm"/><br/>
-    <label for="fullname">Full name: </label>
-    <input type="text" name="fullname"/><br/>
-    <label for="street">Street: </label>
-    <input type="text" name="street"/><br/>
-    <label for="city">City: </label>
-    <input type="text" name="city"/><br/>
-    <label for="state">State: </label>
-    <input type="text" name="state"/><br/>
-    <label for="zip">Zip: </label>
-    <input type="text" name="zip"/><br/>
-    <label for="phone">Phone: </label>
-    <input type="text" name="phone"/><br/>
-    <input type="submit" value="Register"/>
-</form>
+<div style="width: 250px; margin-left: auto; margin-right: auto">
+    <img th:src="@{/images/PizzaCloudSmall.png}"/>
+    <form method="POST" th:action="@{/register}" id="registerForm">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <label for="username">Username: </label>
+                </td>
+                <td>
+                    <input type="text" name="username"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="password">Password: </label>
+                </td>
+                <td>
+                    <input type="password" name="password"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="confirm">Confirm password: </label>
+                </td>
+                <td>
+                    <input type="password" name="confirm"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="fullname">Full name: </label>
+                </td>
+                <td>
+                    <input type="text" name="fullname"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="street">Street: </label>
+                </td>
+                <td>
+                    <input type="text" name="street"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="city">City: </label>
+                </td>
+                <td>
+                    <input type="text" name="city"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="state">State: </label>
+                </td>
+                <td>
+                    <input type="text" name="state"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="zip">Zip: </label>
+                </td>
+                <td>
+                    <input type="text" name="zip"/><br/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="phone">Phone: </label>
+                </td>
+                <td>
+                    <input type="text" name="phone"/><br/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div style="text-align: center">
+            <input type="submit" value="Register"/>
+        </div>
+    </form>
+</div>
 </body>
 </html>
