@@ -1,9 +1,10 @@
-package ru.zubov.pizzacloud.entity.dtos;
+package ru.zubov.pizzacloud.entity.mapper;
 
 import org.mapstruct.*;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.entity.dtos.PizzaOrderDto;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "cdi")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface PizzaOrderMapper {
     PizzaOrder pizzaOrderDtoToPizzaOrder(PizzaOrderDto pizzaOrderDto);
 

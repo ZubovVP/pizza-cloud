@@ -1,9 +1,12 @@
-package ru.zubov.pizzacloud.entity.dtos;
+package ru.zubov.pizzacloud.entity.mapper;
 
 import org.mapstruct.*;
+import org.springframework.stereotype.Service;
 import ru.zubov.pizzacloud.entity.Pizza;
+import ru.zubov.pizzacloud.entity.dtos.PizzaDto;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "cdi")
+@Service
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface PizzaMapper {
     Pizza pizzaDtoToPizza(PizzaDto pizzaDto);
 

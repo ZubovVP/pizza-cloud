@@ -1,9 +1,10 @@
-package ru.zubov.pizzacloud.entity.dtos;
+package ru.zubov.pizzacloud.entity.mapper;
 
 import org.mapstruct.*;
 import ru.zubov.pizzacloud.entity.User;
+import ru.zubov.pizzacloud.entity.dtos.UserDto;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "cdi")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface UserMapper {
     User userDtoToUser(UserDto userDto);
 

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.entity.dtos.PizzaDto;
+import ru.zubov.pizzacloud.entity.mapper.PizzaMapper;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class PizzaController {
     private final PizzaRepository repository;
     private final OrderRepository orderRepository;
+    private final PizzaMapper pizzaMapper;
 
     @GetMapping()
     public Iterable<Pizza> recentPizza() {
@@ -41,8 +44,9 @@ public class PizzaController {
 
     @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public Pizza postPizza(@RequestBody Pizza pizza) {
-        return repository.save(pizza);
+    public Pizza postPizza(@RequestBody PizzaDto pizza) {
+        Pizza pizza1 = pizzaMapper.pizzaDtoToPizza(pizza);
+        return repository.save(pizza1);
     }
 
     @PutMapping(path="/{orderId}", consumes="application/json")
