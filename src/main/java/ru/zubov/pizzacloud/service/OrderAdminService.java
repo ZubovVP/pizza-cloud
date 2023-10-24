@@ -7,9 +7,7 @@ import ru.zubov.pizzacloud.repository.OrderRepository;
 
 @Service
 @RequiredArgsConstructor
-public class OrderAdminService {
-    private final OrderRepository orderRepository;
-
+public record OrderAdminService(OrderRepository orderRepository) {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteAllOrders() {
         orderRepository.deleteAll();
