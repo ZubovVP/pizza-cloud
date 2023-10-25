@@ -4,7 +4,7 @@ import org.mapstruct.*;
 import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "cdi")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface IngredientMapper {
     Ingredient ingredientDtoToIngredient(IngredientDto ingredientDto);
 
