@@ -14,7 +14,9 @@ import ru.zubov.pizzacloud.entity.mapper.PizzaMapper;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/pizza",
@@ -29,16 +31,19 @@ public class PizzaController {
     private final PizzaMapper pizzaMapper;
 
     @GetMapping()
-    public Iterable<Pizza> recentPizza() {
+    public Iterable<PizzaDto> recentPizza() {
         PageRequest page = PageRequest.of(
                 0, 12, Sort.by("createdAt").descending());
-        return repository.findAll(page).getContent();
+        List<Pizza> pizzaList = repository.findAll(page).getContent();
+        return pizzaList.stream()
+                .map(pizzaMapper::pizzaToPizzaDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Pizza> pizzaById(@PathVariable("id") Long id) {
+    public ResponseEntity<PizzaDto> pizzaById(@PathVariable("id") Long id) {
         Optional<Pizza> optPizza = repository.findById(id);
-        return optPizza.map(pizza -> new ResponseEntity<>(pizza, HttpStatus.OK))
+        return optPizza.map(pizza -> new ResponseEntity<>(pizzaMapper.pizzaToPizzaDto(pizza), HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(null, HttpStatus.NOT_FOUND));
     }
 
