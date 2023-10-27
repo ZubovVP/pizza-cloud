@@ -11,6 +11,10 @@ import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.Ingredient.Type;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.entity.dtos.PizzaDto;
+import ru.zubov.pizzacloud.entity.dtos.PizzaOrderDto;
+import ru.zubov.pizzacloud.entity.mapper.PizzaMapper;
+import ru.zubov.pizzacloud.entity.mapper.PizzaOrderMapper;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
@@ -26,6 +30,8 @@ import java.util.stream.Collectors;
 public class DesignPizzaController {
     private final IngredientRepository ingredientRepository;
     private final PizzaRepository pizzaRepository;
+    private final PizzaMapper pizzaMapper;
+    private final PizzaOrderMapper pizzaOrderMapper;
 
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
@@ -53,12 +59,14 @@ public class DesignPizzaController {
     }
 
     @PostMapping
-    public String processPizza(@Valid Pizza pizza, Errors errors, @ModelAttribute PizzaOrder pizzaOrder) {
+    public String processPizza(@Valid PizzaDto pizzaDto, Errors errors, @ModelAttribute PizzaOrderDto pizzaOrderDto) {
         if (errors.hasErrors()) {
             return "design";
         }
+        Pizza pizza = pizzaMapper.pizzaDtoToPizza(pizzaDto);
         pizzaRepository.save(pizza);
-        pizzaOrder.addPizza(pizza);
+        PizzaOrder order = pizzaOrderMapper.pizzaOrderDtoToPizzaOrder(pizzaOrderDto);
+        order.addPizza(pizza);
         log.info("Processing pizza: {}", pizza);
 
         return "redirect:/orders/current";
