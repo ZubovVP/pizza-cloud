@@ -14,9 +14,13 @@ import org.springframework.web.bind.support.SessionStatus;
 import ru.zubov.pizzacloud.config.OrderProps;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.User;
+import ru.zubov.pizzacloud.entity.dtos.PizzaOrderDto;
+import ru.zubov.pizzacloud.entity.mapper.PizzaOrderMapper;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -26,6 +30,7 @@ import java.time.LocalDateTime;
 public class OrderController {
     private final OrderRepository orderRepository;
     private final OrderProps orderProps;
+    private final PizzaOrderMapper pizzaOrderMapper;
 
     @GetMapping("/current")
     public String orderForm() {
@@ -33,17 +38,19 @@ public class OrderController {
     }
 
     @PostMapping
-    public String processOrder(@Valid PizzaOrder order, Errors errors,
+    public String processOrder(@Valid PizzaOrderDto dto, Errors errors,
                                SessionStatus sessionStatus, @AuthenticationPrincipal User user) {
         if (errors.hasErrors() && user != null) {
             return "orderForm";
         }
+        PizzaOrder pizzaOrder = pizzaOrderMapper.pizzaOrderDtoToPizzaOrder(dto);
 
-        order.setPlacedAt(LocalDateTime.now());
-        order.setUser(user);
 
-        log.info("Order submitted: {}", order);
-        orderRepository.save(order);
+        pizzaOrder.setPlacedAt(LocalDateTime.now());
+        pizzaOrder.setUser(user);
+
+        log.info("Order submitted: {}", dto);
+        orderRepository.save(pizzaOrder);
         sessionStatus.setComplete();
         return "redirect:/";
     }
@@ -51,7 +58,11 @@ public class OrderController {
     @GetMapping
     public String ordersForUser(@RequestParam(defaultValue = "0") Integer page, @AuthenticationPrincipal User user, Model model) {
         Pageable pageable = PageRequest.of(page, orderProps.getPageSize());
-        model.addAttribute("orders", orderRepository.findByUserOrderByPlacedAtDesc(user, pageable));
+
+        List<PizzaOrder> byUserOrderByPlacedAtDesc = orderRepository.findByUserOrderByPlacedAtDesc(user, pageable);
+        model.addAttribute("orders", byUserOrderByPlacedAtDesc.stream()
+                .map(pizzaOrderMapper::pizzaOrderToPizzaOrderDto)
+                .collect(Collectors.toList()));
         return "orderList";
     }
 }
