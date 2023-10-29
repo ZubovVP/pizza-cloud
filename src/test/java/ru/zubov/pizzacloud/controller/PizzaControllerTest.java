@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.IngredientByIdConverter;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.entity.mapper.PizzaMapperImpl;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
@@ -60,6 +61,9 @@ class PizzaControllerTest {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
+
+    @MockBean
+    private PizzaMapperImpl pizzaMapper = new PizzaMapperImpl();
 
     @BeforeEach
     public void setup() {
