@@ -15,16 +15,22 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.entity.Ingredient;
-import ru.zubov.pizzacloud.entity.Pizza;
-import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
+import ru.zubov.pizzacloud.entity.dtos.PizzaDto;
+import ru.zubov.pizzacloud.entity.dtos.PizzaOrderDto;
+import ru.zubov.pizzacloud.entity.mapper.PizzaMapperImpl;
+import ru.zubov.pizzacloud.entity.mapper.PizzaOrderMapperImpl;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,6 +52,12 @@ class DesignPizzaControllerTest {
 
     @MockBean
     private PizzaRepository pizzaRepository;
+
+    @MockBean
+    private PizzaMapperImpl pizzaMapper;
+
+    @MockBean
+    private PizzaOrderMapperImpl pizzaOrderMapper;
 
     @BeforeEach
     public void setup() {
@@ -71,13 +83,15 @@ class DesignPizzaControllerTest {
 
     @Test
     public void processPizza() throws Exception {
-        PizzaOrder pizzaOrder = new PizzaOrder();
-        pizzaOrder.setId(111L);
+        PizzaOrderDto pizzaOrder = new PizzaOrderDto(111L, null, null, null,
+                null, null, null, null, null, LocalDateTime.now());
 
-        Pizza pizza = new Pizza();
-        pizza.setName("Pizza_name");
-        pizza.setId(222L);
-        pizza.setIngredients(List.of(new Ingredient()));
+        PizzaDto pizza = new PizzaDto(222L, "Pizza_name", List.of(new IngredientDto("0", "someIngr",
+                Ingredient.Type.PROTEIN)), null, pizzaOrder);
+
+        when(pizzaMapper.pizzaDtoToPizza(any())).thenCallRealMethod();
+        when(pizzaOrderMapper.pizzaOrderDtoToPizzaOrder(any())).thenCallRealMethod();
+
         mockMvc.perform(post("/design")
                         .flashAttr("pizzaOrder", pizzaOrder)
                         .flashAttr("pizza", pizza)
