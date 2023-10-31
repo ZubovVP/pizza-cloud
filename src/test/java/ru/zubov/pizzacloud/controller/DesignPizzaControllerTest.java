@@ -18,6 +18,7 @@ import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
 import ru.zubov.pizzacloud.entity.dtos.PizzaDto;
 import ru.zubov.pizzacloud.entity.dtos.PizzaOrderDto;
+import ru.zubov.pizzacloud.entity.dtos.UserDto;
 import ru.zubov.pizzacloud.entity.mapper.PizzaMapperImpl;
 import ru.zubov.pizzacloud.entity.mapper.PizzaOrderMapperImpl;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
@@ -83,18 +84,21 @@ class DesignPizzaControllerTest {
 
     @Test
     public void processPizza() throws Exception {
-        PizzaOrderDto pizzaOrder = new PizzaOrderDto(111L, null, null, null,
-                null, null, null, null, null, LocalDateTime.now());
 
         PizzaDto pizza = new PizzaDto(222L, "Pizza_name", List.of(new IngredientDto("0", "someIngr",
-                Ingredient.Type.PROTEIN)), null, pizzaOrder);
+                Ingredient.Type.PROTEIN)), null, null);
+
+        UserDto userDto = new UserDto(1L, "user", "fullName", null, null, null, null, null);
+
+        PizzaOrderDto pizzaOrder = new PizzaOrderDto(111L, null, null, null,
+                null, null, null, null, null, LocalDateTime.now(), List.of(pizza), userDto);
 
         when(pizzaMapper.pizzaDtoToPizza(any())).thenCallRealMethod();
         when(pizzaOrderMapper.pizzaOrderDtoToPizzaOrder(any())).thenCallRealMethod();
 
         mockMvc.perform(post("/design")
-                        .flashAttr("pizzaOrder", pizzaOrder)
-                        .flashAttr("pizza", pizza)
+                        .flashAttr("pizzaOrderDto", pizzaOrder)
+                        .flashAttr("pizzaDto", pizza)
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/orders/current"));

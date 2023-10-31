@@ -21,6 +21,8 @@ import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.User;
+import ru.zubov.pizzacloud.entity.mapper.PizzaOrderMapperImpl;
+import ru.zubov.pizzacloud.entity.mapper.UserMapperImpl;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 
@@ -54,6 +56,12 @@ class OrderControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
+    @MockBean
+    private PizzaOrderMapperImpl pizzaOrderMapper;
+
+    @MockBean
+    private UserMapperImpl userMapper;
+
     @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
@@ -80,7 +88,8 @@ class OrderControllerTest {
         pizzaOrder.setUser(user);
 
         Mockito.when(this.orderRepository.findByUserOrderByPlacedAtDesc(null, pageable)).thenReturn(List.of(pizzaOrder));
-
+        doCallRealMethod().when(pizzaOrderMapper).pizzaOrderToPizzaOrderDto(pizzaOrder);
+        doCallRealMethod().when(userMapper).userToUserDto(user);
 
         mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk())

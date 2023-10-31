@@ -19,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.entity.Ingredient;
+import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
+import ru.zubov.pizzacloud.entity.mapper.IngredientMapperImpl;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 
 import java.util.List;
@@ -41,6 +43,9 @@ class IngredientControllerTest {
     @MockBean
     private IngredientRepository ingredientRepository;
 
+    @MockBean
+    private IngredientMapperImpl ingredientMapper;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -62,6 +67,7 @@ class IngredientControllerTest {
         Ingredient ingredient = new Ingredient("id", "name", Ingredient.Type.PROTEIN);
 
         when(ingredientRepository.findAll()).thenReturn(List.of(ingredient));
+        doCallRealMethod().when(ingredientMapper).ingredientToIngredientDto(ingredient);
 
         mvc.perform(get("/api/ingredients"))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", Matchers.hasSize(1)))
@@ -73,7 +79,9 @@ class IngredientControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void postCreateIngredient() throws Exception {
-        Ingredient ingredient = new Ingredient("id", "name", Ingredient.Type.PROTEIN);
+        IngredientDto ingredient = new IngredientDto("id", "name", Ingredient.Type.PROTEIN);
+
+        doCallRealMethod().when(ingredientMapper).ingredientDtoToIngredient(ingredient);
 
         mvc.perform(post("/api/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)

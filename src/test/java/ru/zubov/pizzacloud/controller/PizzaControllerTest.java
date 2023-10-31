@@ -25,6 +25,7 @@ import ru.zubov.pizzacloud.IngredientByIdConverter;
 import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.mapper.PizzaMapperImpl;
+import ru.zubov.pizzacloud.entity.mapper.PizzaOrderMapperImpl;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 import ru.zubov.pizzacloud.repository.PizzaRepository;
 
@@ -63,7 +64,10 @@ class PizzaControllerTest {
     private WebApplicationContext webApplicationContext;
 
     @MockBean
-    private PizzaMapperImpl pizzaMapper = new PizzaMapperImpl();
+    private PizzaMapperImpl pizzaMapper;
+
+    @MockBean
+    private PizzaOrderMapperImpl pizzaOrderMapper;
 
     @BeforeEach
     public void setup() {
@@ -97,6 +101,7 @@ class PizzaControllerTest {
         when(pageable.getContent()).thenReturn(List.of(p));
 
         when(repository.findAll(any(PageRequest.class))).thenReturn(pageable);
+        doCallRealMethod().when(pizzaMapper).pizzaToPizzaDto(p);
 
         mockMvc.perform(get("/api/pizza?recent=123")
                         .header("Access-Control-Request-Method", "GET")
@@ -120,6 +125,8 @@ class PizzaControllerTest {
     void testCreatePizza() throws Exception {
         JSONObject pizzaJson = new JSONObject();
         pizzaJson.put("id", "123");
+
+        doCallRealMethod().when(pizzaMapper).pizzaDtoToPizza(any());
 
         mockMvc.perform(post("/api/pizza")
                         .contentType(MediaType.APPLICATION_JSON)
