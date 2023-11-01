@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.entity.Ingredient;
+import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
 import ru.zubov.pizzacloud.entity.dtos.PizzaDto;
 import ru.zubov.pizzacloud.entity.dtos.PizzaOrderDto;
@@ -94,7 +95,7 @@ class DesignPizzaControllerTest {
                 null, null, null, null, null, LocalDateTime.now(), List.of(pizza), userDto);
 
         when(pizzaMapper.pizzaDtoToPizza(any())).thenCallRealMethod();
-        when(pizzaOrderMapper.pizzaOrderDtoToPizzaOrder(any())).thenCallRealMethod();
+        when(pizzaOrderMapper.pizzaOrderDtoToPizzaOrder(any())).thenReturn(new PizzaOrder());
 
         mockMvc.perform(post("/design")
                         .flashAttr("pizzaOrderDto", pizzaOrder)

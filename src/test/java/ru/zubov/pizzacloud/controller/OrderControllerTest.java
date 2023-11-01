@@ -17,15 +17,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.config.OrderProps;
-import ru.zubov.pizzacloud.entity.Ingredient;
-import ru.zubov.pizzacloud.entity.Pizza;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
 import ru.zubov.pizzacloud.entity.User;
+import ru.zubov.pizzacloud.entity.dtos.PizzaOrderDto;
+import ru.zubov.pizzacloud.entity.dtos.UserDto;
 import ru.zubov.pizzacloud.entity.mapper.PizzaOrderMapperImpl;
 import ru.zubov.pizzacloud.entity.mapper.UserMapperImpl;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.repository.OrderRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -88,8 +89,10 @@ class OrderControllerTest {
         pizzaOrder.setUser(user);
 
         Mockito.when(this.orderRepository.findByUserOrderByPlacedAtDesc(null, pageable)).thenReturn(List.of(pizzaOrder));
-        doCallRealMethod().when(pizzaOrderMapper).pizzaOrderToPizzaOrderDto(pizzaOrder);
-        doCallRealMethod().when(userMapper).userToUserDto(user);
+        when(pizzaOrderMapper.pizzaOrderToPizzaOrderDto(pizzaOrder)).thenReturn(
+                new PizzaOrderDto(1L, null, null, null, null,
+                        null, null, null, null, LocalDateTime.now(), List.of(),
+                        new UserDto(2L, "", "", null, null, null, null, null)));
 
         mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk())
@@ -114,13 +117,13 @@ class OrderControllerTest {
         PizzaOrder pizzaOrder = mock(PizzaOrder.class);
         pizzaOrder.setId(111L);
 
-        Pizza pizza = new Pizza();
-        pizza.setName("Pizza_name");
-        pizza.setId(222L);
-        pizza.setIngredients(List.of(new Ingredient()));
+        PizzaOrderDto dto = new PizzaOrderDto(1L, "", null, null, null, null, null, null, null, null, List.of(), new UserDto(2L, null, null, null, null, null, null, null));
+
+
+        when(pizzaOrderMapper.pizzaOrderDtoToPizzaOrder(any())).thenReturn(pizzaOrder);
         mockMvc.perform(post("/orders")
                         .flashAttr("pizzaOrder", pizzaOrder)
-                        .flashAttr("pizza", pizza)
+                        .flashAttr("dto", dto)
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
