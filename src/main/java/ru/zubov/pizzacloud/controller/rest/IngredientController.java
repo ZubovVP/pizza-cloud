@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.SignUpDto;
 import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
 import ru.zubov.pizzacloud.entity.mapper.IngredientMapper;
@@ -34,14 +33,22 @@ public class IngredientController {
     }
 
     @PostMapping
-//    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Ingredient saveIngredient(@RequestBody IngredientDto ingredient) {
-        return repo.save(ingredientMapper.ingredientDtoToIngredient(ingredient));
+    public ResponseEntity<?> saveIngredient(@RequestBody IngredientDto ingredient, @RequestBody SignUpDto signUpDto) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(signUpDto.getLogin());
+        if (userDetails == null) {
+            return new ResponseEntity<>("Username can't find!", HttpStatus.BAD_REQUEST);
+        }
+        if (passwordEncoder.matches(signUpDto.getPassword(), userDetails.getPassword())) {
+            if (userDetails.getAuthorities().stream().anyMatch(a -> Objects.equals(a.getAuthority(), "ROLE_ADMIN"))) {
+                return new ResponseEntity<>(repo.save(ingredientMapper.ingredientDtoToIngredient(ingredient)), HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Don't have right role!", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>("Username or password is wrong!", HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deleteIngredient(@PathVariable("id") String ingredientId, @RequestBody SignUpDto signUpDto) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(signUpDto.getLogin());
@@ -49,16 +56,13 @@ public class IngredientController {
             return new ResponseEntity<>("Username can't find!", HttpStatus.BAD_REQUEST);
 
         }
-
-        if (!Objects.equals(userDetails.getPassword(), passwordEncoder.encode(signUpDto.getPassword()))) {
-            return new ResponseEntity<>("Username or password is wrong!", HttpStatus.BAD_REQUEST);
+        if (passwordEncoder.matches(signUpDto.getPassword(), userDetails.getPassword())) {
+            if (userDetails.getAuthorities().stream().anyMatch(a -> Objects.equals(a.getAuthority(), "ROLE_ADMIN"))) {
+                repo.deleteById(ingredientId);
+                return new ResponseEntity<>(null, HttpStatus.OK);
+            }
+            return new ResponseEntity<>("Don't have right role!", HttpStatus.BAD_REQUEST);
         }
-
-        if (userDetails.getAuthorities().stream().anyMatch(a -> Objects.equals(a.getAuthority(), "ROLE_ADMIN"))) {
-            repo.deleteById(ingredientId);
-            return new ResponseEntity<>(null, HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>("Don't have right role!", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Username or password is wrong!", HttpStatus.BAD_REQUEST);
     }
 }
