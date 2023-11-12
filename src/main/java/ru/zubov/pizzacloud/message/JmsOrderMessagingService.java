@@ -14,8 +14,9 @@ public class JmsOrderMessagingService implements OrderMessagingService {
 
     @Override
     public void sendOrder(PizzaOrder order) {
-        jms.send(orderQueue,
-                session -> session.createObjectMessage(order)
-        );
+        jms.convertAndSend(orderQueue, order, message -> {
+            message.setStringProperty("X_ORDER_SOURCE", "WEB");
+            return message;
+        });
     }
 }
