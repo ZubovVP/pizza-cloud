@@ -1,4 +1,12 @@
 spring:
+  rabbitmq:
+    host: rabbit.pizzacloud.com
+    port: 5673
+    username: admin
+    password: admin
+    template:
+      exchange: pizzacloud.order
+      routing-key: kitchens.central
   artemis:
     host: artemis.pizzacloud.com
     port: 61617
@@ -17,6 +25,8 @@ spring:
         show_sql=true: true
         use_sql_comments: true
         format_sql: true
+
+#        для JSM
   jms:
     template:
       default-destination: pizzacloud.order.queue
