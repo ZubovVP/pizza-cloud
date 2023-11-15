@@ -7,6 +7,7 @@ spring:
     template:
       exchange: pizzacloud.order
       routing-key: kitchens.central
+      receive-timeout: 30000
   artemis:
     host: artemis.pizzacloud.com
     port: 61617
