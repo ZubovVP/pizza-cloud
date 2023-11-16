@@ -1,12 +1,13 @@
-package ru.zubov.pizzacloud.message;
+package ru.zubov.pizzacloud.message.rabbitMQ;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.message.OrderMessagingService;
 
 @RequiredArgsConstructor
-public class RabbitOrderMessagingService implements OrderMessagingService{
+public class RabbitOrderMessagingService implements OrderMessagingService {
     private final RabbitTemplate rabbit;
 
     @Override

@@ -1,10 +1,11 @@
-package ru.zubov.pizzacloud.message;
+package ru.zubov.pizzacloud.message.artemis;
 
 import jakarta.jms.Destination;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import ru.zubov.pizzacloud.entity.PizzaOrder;
+import ru.zubov.pizzacloud.message.OrderMessagingService;
 
 @Service
 @RequiredArgsConstructor

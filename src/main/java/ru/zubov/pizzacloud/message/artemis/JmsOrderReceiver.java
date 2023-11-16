@@ -1,4 +1,4 @@
-package ru.zubov.pizzacloud.message;
+package ru.zubov.pizzacloud.message.artemis;
 
 import jakarta.jms.Destination;
 import lombok.RequiredArgsConstructor;
