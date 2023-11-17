@@ -13,6 +13,12 @@ spring:
     port: 61617
     user: admin
     password: admin
+  kafka:
+    bootstrap-servers:
+#    - kafka.pizzacloud.com:9092
+#    - kafka.pizzacloud.com:9093
+#    - kafka.pizzacloud.com:9094
+    - localhost:9092
   application:
     name: SpringBoot-Multi-Environment
   profiles:
