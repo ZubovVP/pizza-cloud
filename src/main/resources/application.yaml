@@ -19,6 +19,8 @@ spring:
 #    - kafka.pizzacloud.com:9093
 #    - kafka.pizzacloud.com:9094
     - localhost:9092
+    template:
+    default-topic: pizzacloud.orders.topic
   application:
     name: SpringBoot-Multi-Environment
   profiles:
