@@ -42,3 +42,11 @@ spring:
 #  jackson:
 #    serialization:
 #      FAIL_ON_EMPTY_BEANS: false
+
+pizzacloud:
+  email:
+    host: imap.pizzacloud.com
+    mailbox: INBOX
+    username: taco-in-flow
+    password: 1L0v3T4c0s
+    poll-rate: 10000
