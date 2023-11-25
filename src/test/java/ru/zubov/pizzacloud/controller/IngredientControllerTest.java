@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -20,9 +21,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.controller.rest.IngredientController;
 import ru.zubov.pizzacloud.entity.Ingredient;
+import ru.zubov.pizzacloud.entity.SignUpDto;
+import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
 import ru.zubov.pizzacloud.entity.mapper.IngredientMapperImpl;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
+import ru.zubov.pizzacloud.service.CustomUserDetailsService;
 
 import java.util.List;
 
@@ -46,6 +50,12 @@ class IngredientControllerTest {
 
     @MockBean
     private IngredientMapperImpl ingredientMapper;
+
+    @MockBean
+    private CustomUserDetailsService customUserDetailsService;
+
+    @MockBean
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -95,8 +105,11 @@ class IngredientControllerTest {
     @Test
     @WithMockUser(roles = "ADMIN")
     public void deleteDeleteIngredient() throws Exception {
+        SignUpDto signUpDto = new SignUpDto();
+        when(customUserDetailsService.loadUserByUsername(any())).thenReturn(new User());
         mvc.perform(delete("/api/ingredients/{id}", "123")
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(signUpDto)))
                 .andExpect(status().isNoContent());
         verify(ingredientRepository, times(1)).deleteById("123");
     }
