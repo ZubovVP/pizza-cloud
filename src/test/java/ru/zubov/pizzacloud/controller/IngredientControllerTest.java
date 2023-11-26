@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import ru.zubov.pizzacloud.controller.rest.IngredientController;
 import ru.zubov.pizzacloud.entity.Ingredient;
+import ru.zubov.pizzacloud.entity.RoleUser;
 import ru.zubov.pizzacloud.entity.SignUpDto;
 import ru.zubov.pizzacloud.entity.User;
 import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
@@ -29,6 +30,7 @@ import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.service.CustomUserDetailsService;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -92,11 +94,20 @@ class IngredientControllerTest {
     public void postCreateIngredient() throws Exception {
         IngredientDto ingredient = new IngredientDto("id", "name", Ingredient.Type.PROTEIN);
 
+        SignUpDto signUpDto = new SignUpDto();
+        signUpDto.setLogin("abc");
+        signUpDto.setPassword("123");
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        User user = new User();
+        user.getAuthorities().add(new RoleUser(1L, "ROLE_ADMIN", null));
+        when(customUserDetailsService.loadUserByUsername(any())).thenReturn(user);
+
         doCallRealMethod().when(ingredientMapper).ingredientDtoToIngredient(ingredient);
 
         mvc.perform(post("/api/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(ingredient)))
+//                        .content(asJsonString(ingredient))
+                        .content(asJsonString(Map.of("signUpDto", signUpDto, "ingredient", ingredient))))
                 .andExpect(status().isCreated());
 
         verify(ingredientRepository, times(1)).save(argThat(i -> i.getType() == Ingredient.Type.PROTEIN));
@@ -106,11 +117,16 @@ class IngredientControllerTest {
     @WithMockUser(roles = "ADMIN")
     public void deleteDeleteIngredient() throws Exception {
         SignUpDto signUpDto = new SignUpDto();
-        when(customUserDetailsService.loadUserByUsername(any())).thenReturn(new User());
+        signUpDto.setLogin("abc");
+        signUpDto.setPassword("123");
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        User user = new User();
+        user.getAuthorities().add(new RoleUser(1L, "ROLE_ADMIN", null));
+        when(customUserDetailsService.loadUserByUsername(any())).thenReturn(user);
         mvc.perform(delete("/api/ingredients/{id}", "123")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(signUpDto)))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
         verify(ingredientRepository, times(1)).deleteById("123");
     }
 

@@ -12,6 +12,7 @@ import ru.zubov.pizzacloud.entity.mapper.IngredientMapper;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.service.CustomUserDetailsService;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -34,14 +35,15 @@ public class IngredientController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<?> saveIngredient(@RequestBody IngredientDto ingredient, @RequestBody SignUpDto signUpDto) {
+    public ResponseEntity<?> saveIngredient(@RequestBody Map<String, Object> map) {
+        SignUpDto signUpDto = (SignUpDto) map.get("signUpDto");
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(signUpDto.getLogin());
         if (userDetails == null) {
             return new ResponseEntity<>("Username can't find!", HttpStatus.BAD_REQUEST);
         }
         if (passwordEncoder.matches(signUpDto.getPassword(), userDetails.getPassword())) {
             if (userDetails.getAuthorities().stream().anyMatch(a -> Objects.equals(a.getAuthority(), "ROLE_ADMIN"))) {
-                return new ResponseEntity<>(repo.save(ingredientMapper.ingredientDtoToIngredient(ingredient)), HttpStatus.OK);
+                return new ResponseEntity<>(repo.save(ingredientMapper.ingredientDtoToIngredient(((IngredientDto)map.get("ingredient")))), HttpStatus.OK);
             }
             return new ResponseEntity<>("Don't have right role!", HttpStatus.BAD_REQUEST);
         }
@@ -49,7 +51,6 @@ public class IngredientController {
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> deleteIngredient(@PathVariable("id") String ingredientId, @RequestBody SignUpDto signUpDto) {
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(signUpDto.getLogin());
         if (userDetails == null) {
