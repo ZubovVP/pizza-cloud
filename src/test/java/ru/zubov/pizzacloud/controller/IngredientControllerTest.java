@@ -106,7 +106,6 @@ class IngredientControllerTest {
 
         mvc.perform(post("/api/ingredients")
                         .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(ingredient))
                         .content(asJsonString(Map.of("signUpDto", signUpDto, "ingredient", ingredient))))
                 .andExpect(status().isCreated());
 
