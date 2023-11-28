@@ -57,7 +57,7 @@ public class PizzaController {
         return repository.save(pizza1);
     }
 
-    @PutMapping(path="/{orderId}", consumes="application/json")
+    @PutMapping(path = "/{orderId}", consumes = "application/json")
     public PizzaOrderDto putOrder(
             @PathVariable("orderId") Long orderId,
             @RequestBody PizzaOrder order) {
@@ -66,9 +66,9 @@ public class PizzaController {
         return pizzaOrderMapper.pizzaOrderToPizzaOrderDto(pizzaOrder);
     }
 
-    @PatchMapping(path="/{orderId}", consumes="application/json")
+    @PatchMapping(path = "/{orderId}", consumes = "application/json")
     public PizzaOrder patchOrder(@PathVariable("orderId") Long orderId,
-                                @RequestBody PizzaOrder patch) {
+                                 @RequestBody PizzaOrder patch) {
         PizzaOrder order = orderRepository.findById(orderId).get();
         if (patch.getDeliveryName() != null) {
             order.setDeliveryName(patch.getDeliveryName());

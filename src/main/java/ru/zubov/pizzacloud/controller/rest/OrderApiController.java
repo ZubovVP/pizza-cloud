@@ -10,14 +10,14 @@ import ru.zubov.pizzacloud.repository.OrderRepository;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path="/api/orders",
-        produces="application/json")
-@CrossOrigin(origins="http://localhost:8080")
+@RequestMapping(path = "/api/orders",
+        produces = "application/json")
+@CrossOrigin(origins = "http://localhost:8080")
 public class OrderApiController {
     private final OrderRepository orderRepository;
     private final OrderMessagingService messagingService;
 
-    @PostMapping(consumes="application/json")
+    @PostMapping(consumes = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
     public PizzaOrder postOrder(@RequestBody PizzaOrder order) {
         messagingService.sendOrder(order);

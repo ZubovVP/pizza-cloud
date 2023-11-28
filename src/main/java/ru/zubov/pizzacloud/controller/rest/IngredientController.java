@@ -43,7 +43,7 @@ public class IngredientController {
         }
         if (passwordEncoder.matches(signUpDto.getPassword(), userDetails.getPassword())) {
             if (userDetails.getAuthorities().stream().anyMatch(a -> Objects.equals(a.getAuthority(), "ROLE_ADMIN"))) {
-                return new ResponseEntity<>(repo.save(ingredientMapper.ingredientDtoToIngredient(((IngredientDto)map.get("ingredient")))), HttpStatus.OK);
+                return new ResponseEntity<>(repo.save(ingredientMapper.ingredientDtoToIngredient(((IngredientDto) map.get("ingredient")))), HttpStatus.OK);
             }
             return new ResponseEntity<>("Don't have right role!", HttpStatus.BAD_REQUEST);
         }

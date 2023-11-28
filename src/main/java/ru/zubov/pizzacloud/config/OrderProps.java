@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.annotation.Validated;
 
 @Component
-@ConfigurationProperties(prefix="pizza.orders")
+@ConfigurationProperties(prefix = "pizza.orders")
 @Data
 @Validated
 public class OrderProps {
 
-    @Min(value=5, message="must be between 5 and 50")
-    @Max(value=50, message="must be between 5 and 50")
+    @Min(value = 5, message = "must be between 5 and 50")
+    @Max(value = 50, message = "must be between 5 and 50")
     private int pageSize = 20;
 }
