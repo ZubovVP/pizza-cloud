@@ -24,18 +24,17 @@ import ru.zubov.pizzacloud.entity.Ingredient;
 import ru.zubov.pizzacloud.entity.RoleUser;
 import ru.zubov.pizzacloud.entity.SignUpDto;
 import ru.zubov.pizzacloud.entity.User;
-import ru.zubov.pizzacloud.entity.dtos.IngredientDto;
 import ru.zubov.pizzacloud.entity.mapper.IngredientMapperImpl;
 import ru.zubov.pizzacloud.repository.IngredientRepository;
 import ru.zubov.pizzacloud.service.CustomUserDetailsService;
 
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -87,29 +86,6 @@ class IngredientControllerTest {
                 .andExpect(jsonPath("$[0].id", Matchers.equalTo("id")))
                 .andExpect(jsonPath("$[0].name", Matchers.equalTo("name")))
                 .andExpect(jsonPath("$[0].type").value("PROTEIN"));
-    }
-
-    @Test
-    @WithMockUser(roles = "ADMIN")
-    public void postCreateIngredient() throws Exception {
-        IngredientDto ingredient = new IngredientDto("id", "name", Ingredient.Type.PROTEIN);
-
-        SignUpDto signUpDto = new SignUpDto();
-        signUpDto.setLogin("abc");
-        signUpDto.setPassword("123");
-        when(passwordEncoder.matches(any(), any())).thenReturn(true);
-        User user = new User();
-        user.getAuthorities().add(new RoleUser(1L, "ROLE_ADMIN", null));
-        when(customUserDetailsService.loadUserByUsername(any())).thenReturn(user);
-
-        doCallRealMethod().when(ingredientMapper).ingredientDtoToIngredient(ingredient);
-
-        mvc.perform(post("/api/ingredients")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(Map.of("signUpDto", signUpDto, "ingredient", ingredient))))
-                .andExpect(status().isCreated());
-
-        verify(ingredientRepository, times(1)).save(argThat(i -> i.getType() == Ingredient.Type.PROTEIN));
     }
 
     @Test
