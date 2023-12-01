@@ -1,10 +1,4 @@
 spring:
-  security:
-    oauth2:
-      client:
-        provider:
-          keycloak-provider: # !!! should be keycloak-application-tokens-provider:
-            issuer-uri: "..."
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
