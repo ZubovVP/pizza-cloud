@@ -19,9 +19,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: none
-#logging:
-#  level:
-#    ru.zubov.pizzacloud: WARN
+logging:
+  level:
+    ru.zubov.pizzacloud: WARN
 pizza:
   orders:
     pageSize: 50
