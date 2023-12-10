@@ -14,7 +14,6 @@ import ru.zubov.pizzacloud.service.CustomUserDetailsService;
 
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/api/ingredients", produces = "application/json")
@@ -30,7 +29,7 @@ public class IngredientController {
     public Iterable<IngredientDto> allIngredients() {
         return repo.findAll().stream()
                 .map(ingredientMapper::ingredientToIngredientDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @PostMapping
